@@ -79,7 +79,7 @@ class AppDrawer extends StatelessWidget {
                     context,
                     PageRouteBuilder(
                         pageBuilder: (BuildContext context, _, __) =>
-                            PastorCorner(),
+                            Notes(),
                         transitionsBuilder:
                             (_, Animation<double> animation, __, Widget child) {
                           return new FadeTransition(
