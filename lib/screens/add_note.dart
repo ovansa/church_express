@@ -1,16 +1,15 @@
 import 'package:church_express/providers/note_provider.dart';
+import 'package:church_express/utils/colors.dart';
+import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/inherited_widget/inherited_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-enum NoteMode {
-  Editing,
-  Adding
-}
+enum NoteMode { Editing, Adding }
 
 class AddNote extends StatefulWidget {
-
   final NoteMode noteMode;
-  final Map<String , dynamic> note;
+  final Map<String, dynamic> note;
 
   AddNote(this.noteMode, this.note);
 
@@ -36,61 +35,96 @@ class _AddNoteState extends State<AddNote> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text(widget.noteMode == NoteMode.Adding ? "Add note" : "Edit note"),
+          iconTheme: IconThemeData(color: floatButtonColor),
+          backgroundColor: appBarColor,
+          title: Text(
+              widget.noteMode == NoteMode.Adding ? "Add note" : "Edit note",
+              style: appBarTextStyle),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(40.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TextField(
-                controller: _titleController,
-                decoration: InputDecoration(hintText: "Note Title"),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              TextField(
-                controller: _textController,
-                decoration: InputDecoration(hintText: "Note Title"),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  _NoteButton("Save", Colors.blue, () {
-                    final title = _titleController.text;
-                    final text = _textController.text;
-                    if(widget?.noteMode == NoteMode.Adding) {
-                      NoteProvider.insertData({
-                        'title': title,
-                        'text': text
-                      });
-                    } else if(widget?.noteMode == NoteMode.Editing) {
-                      NoteProvider.updateNote({
-                        'id': widget.note['id'],
-                        'title': _titleController.text,
-                        'text': _textController.text
-                      });
-                    }
-                    Navigator.pop(context);
-                  }),
-                  _NoteButton("Discard", Colors.grey, () {
-                    Navigator.pop(context);
-                  }),
-                  widget.noteMode == NoteMode.Editing ?
-                  _NoteButton("Delete", Colors.red, () async {
-                    await NoteProvider.deleteNote(widget.note['id']);
-                    Navigator.pop(context);
-                  }) : SizedBox.shrink(),
-                ],
-              )
-            ],
-          ),
-        ));
+            padding: const EdgeInsets.all(20.0),
+            child: Stack(
+              children: <Widget>[
+                Positioned(
+                  top: 0.0,
+                  left: 0.0,
+                  right: 0.0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "Title:",
+                        style: noteTitleStyle,
+                      ),
+                      SizedBox(height: 10.0,),
+                      TextField(
+                        controller: _titleController,
+                        cursorColor: Colors.grey,
+                        decoration: InputDecoration.collapsed(hintText: "Title",
+
+                        ),
+                        style: noteTextStyle,
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Text(
+                        "Note:",
+                        style: noteTitleStyle,
+                      ),
+                      SizedBox(height: 10.0,),
+                      TextField(
+                        cursorColor: Colors.grey,
+                        controller: _textController,
+                        decoration: InputDecoration.collapsed(hintText: "Note",),
+                        style: noteTextStyle,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 22,
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                    bottom: 0.0,
+                    left: 0.0,
+                    right: 0.0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        _NoteButton("Save", floatButtonColor, () {
+                          final title = _titleController.text;
+                          final text = _textController.text;
+                          if (widget?.noteMode == NoteMode.Adding) {
+                            NoteProvider.insertData(
+                                {'title': title, 'text': text});
+                          } else if (widget?.noteMode == NoteMode.Editing) {
+                            NoteProvider.updateNote({
+                              'id': widget.note['id'],
+                              'title': _titleController.text,
+                              'text': _textController.text
+                            });
+                          }
+                          Navigator.pop(context);
+                        }),
+                        _NoteButton("Discard", Color(0xFF545454), () {
+                          Navigator.pop(context);
+                        }),
+                        widget.noteMode == NoteMode.Editing
+                            ? _NoteButton("Delete", Colors.red, () async {
+                                await NoteProvider.deleteNote(
+                                    widget.note['id']);
+                                Navigator.pop(context);
+                              })
+                            : SizedBox.shrink(),
+                      ],
+                    ))
+              ],
+            )));
   }
 }
 
@@ -105,12 +139,15 @@ class _NoteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
       onPressed: _onPressed,
+      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(5.0)),
       child: Text(
         _text,
-        style: TextStyle(color: Colors.white),
+        style: noteButtonStyle,
       ),
       minWidth: 100,
       color: _color,
     );
   }
 }
+
+
