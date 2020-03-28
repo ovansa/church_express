@@ -3,7 +3,6 @@ import 'package:church_express/screens/add_note.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
-import 'package:church_express/widgets/inherited_widget/inherited_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -15,7 +14,6 @@ class Notes extends StatefulWidget {
 class _NotesState extends State<Notes> {
   final GlobalKey<ScaffoldState> _globalKey = new GlobalKey();
 
-//  List<Map<String, String>> get _notes => NoteInheritedWidget.of(context).notes;
 
   @override
   Widget build(BuildContext context) {

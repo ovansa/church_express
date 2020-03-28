@@ -9,6 +9,7 @@ class Bible extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _globalKey,
       appBar: AppBar(
           title: Text("Bible", style: appBarTextStyle,),
           backgroundColor: appBarColor,
@@ -18,7 +19,7 @@ class Bible extends StatelessWidget {
       ),
       drawer: AppDrawer(),
       body: Container(
-        color: Colors.blueGrey,
+        
       ),
     );
   }
