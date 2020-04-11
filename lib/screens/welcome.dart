@@ -1,11 +1,21 @@
+import 'package:church_express/models/events.dart';
+import 'package:church_express/services/firebase_auth.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/bottom_nav_widget/bottom_navigation_bar.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
+import 'package:church_express/widgets/event_list.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Welcome extends StatefulWidget {
+//  final BaseAuth auth;
+//  final VoidCallback logoutCallback;
+//  final String userId;
+
+//  Welcome({Key key, this.auth, this.logoutCallback, this.userId}) : super(key: key);
+
   @override
   _WelcomeState createState() => _WelcomeState();
 }
@@ -19,14 +29,20 @@ class _WelcomeState extends State<Welcome> {
     return Scaffold(
       key: _globalKey,
       appBar: AppBar(
-        title: Text("Welcome", style: appBarTextStyle,),
-        backgroundColor: appBarColor,
-        leading: IconButton(icon: Image.asset("assets/icons/drawer_icon.png"), onPressed: () {
-          _globalKey.currentState.openDrawer();
-        })
-      ),
+          title: Text(
+            "Welcome",
+            style: appBarTextStyle,
+          ),
+          backgroundColor: appBarColor,
+          leading: IconButton(
+              icon: Image.asset("assets/icons/drawer_icon.png"),
+              onPressed: () {
+                _globalKey.currentState.openDrawer();
+              })),
       drawer: AppDrawer(),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        child: EventItem()
       ),
       bottomNavigationBar: BottomNavigationBar(
           backgroundColor: bottomNavBarColor,
@@ -39,24 +55,47 @@ class _WelcomeState extends State<Welcome> {
           onTap: onTabTapped,
           items: [
             BottomNavigationBarItem(
-              icon: new Icon(FontAwesomeIcons.cross, size: 16.0,),
-              title: new Text('Welcome', style: bottomNavBarTextStyle,),
+              icon: new Icon(
+                FontAwesomeIcons.cross,
+                size: 16.0,
+              ),
+              title: new Text(
+                'Welcome',
+                style: bottomNavBarTextStyle,
+              ),
             ),
             BottomNavigationBarItem(
-              icon: new Icon(FontAwesomeIcons.playCircle, size: 16.0,),
-              title: new Text('Live Stream', style: bottomNavBarTextStyle,),
+              icon: new Icon(
+                FontAwesomeIcons.playCircle,
+                size: 16.0,
+              ),
+              title: new Text(
+                'Live Stream',
+                style: bottomNavBarTextStyle,
+              ),
             ),
             BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.mapMarkerAlt, size: 16.0,),
-                title: Text('Location', style: bottomNavBarTextStyle,)
-            ),
+                icon: Icon(
+                  FontAwesomeIcons.mapMarkerAlt,
+                  size: 16.0,
+                ),
+                title: Text(
+                  'Location',
+                  style: bottomNavBarTextStyle,
+                )),
             BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.bible, size: 16.0,),
-                title: Text('Bible', style: bottomNavBarTextStyle,)
-            )
+                icon: Icon(
+                  FontAwesomeIcons.bible,
+                  size: 16.0,
+                ),
+                title: Text(
+                  'Bible',
+                  style: bottomNavBarTextStyle,
+                ))
           ]),
     );
   }
+
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;

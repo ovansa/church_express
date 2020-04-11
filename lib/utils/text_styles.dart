@@ -13,3 +13,12 @@ TextStyle noteTitleStyle = GoogleFonts.montserrat(fontSize: 14.0, fontWeight: Fo
 TextStyle noteTextStyle = GoogleFonts.montserrat(fontSize: 14.0, fontWeight: FontWeight.w400, color: Color(0xFF000000), letterSpacing: 1.5);
 
 TextStyle noteButtonStyle = GoogleFonts.montserrat(fontSize: 12.0, fontWeight: FontWeight.w800, color: Color(0xFFFFFFFF), letterSpacing: 1.5);
+
+TextStyle welcomeListTitle = GoogleFonts.montserrat(fontSize: 12.0, color: Color(0xFF000000).withOpacity(0.6), fontWeight: FontWeight.w600);
+TextStyle welcomeDateTitle = GoogleFonts.montserrat(fontSize: 12.0, color: Color(0xFF000000).withOpacity(0.7), fontWeight: FontWeight.w700);
+TextStyle welcomeTimeTitle = GoogleFonts.montserrat(fontSize: 10.0, color: Color(0xFF000000).withOpacity(0.3), fontWeight: FontWeight.w500);
+
+TextStyle welcomeTitle = GoogleFonts.montserrat(fontSize: 30.0, color: Color(0xFF000000), fontWeight: FontWeight.w500);
+TextStyle welcomeSubTitle = GoogleFonts.montserrat(fontSize: 15.0, color: Color(0xFF000000), fontWeight: FontWeight.w400);
+TextStyle welcomeTextField = GoogleFonts.montserrat(fontSize: 14.0, color: Color(0xFF000000), fontWeight: FontWeight.w300);
+TextStyle welcomeSubmitButton = GoogleFonts.montserrat(fontSize: 17.0, color: Color(0xFF000000), fontWeight: FontWeight.w500);

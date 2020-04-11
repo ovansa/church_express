@@ -1,7 +1,9 @@
-import 'package:church_express/screens/bible.dart';
+import 'package:church_express/screens/give.dart';
+import 'package:church_express/screens/home.dart';
 import 'package:church_express/screens/giving.dart';
 import 'package:church_express/screens/live_stream.dart';
 import 'package:church_express/screens/notes.dart';
+import 'package:church_express/screens/welcome.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/drawer_widgets/drawer_widgets.dart';
@@ -33,7 +35,7 @@ class AppDrawer extends StatelessWidget {
           createDrawerItem(
               icon: FontAwesomeIcons.userTie,
               text: Text(
-                "Bible",
+                "Home",
                 style: drawerItemsStyle,
               ),
               onTap: () {
@@ -41,7 +43,7 @@ class AppDrawer extends StatelessWidget {
                 Navigator.push(
                     context,
                     PageRouteBuilder(
-                        pageBuilder: (BuildContext context, _, __) => Bible(),
+                        pageBuilder: (BuildContext context, _, __) => Welcome(),
                         transitionsBuilder:
                             (_, Animation<double> animation, __, Widget child) {
                           return new FadeTransition(
@@ -59,7 +61,7 @@ class AppDrawer extends StatelessWidget {
                 Navigator.push(
                     context,
                     PageRouteBuilder(
-                        pageBuilder: (BuildContext context, _, __) => Giving(),
+                        pageBuilder: (BuildContext context, _, __) => Give(),
                         transitionsBuilder:
                             (_, Animation<double> animation, __, Widget child) {
                           return new FadeTransition(

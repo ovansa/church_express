@@ -25,7 +25,7 @@ class _LiveStreamState extends State<LiveStream> {
 
   _initChannel() async {
     Channel channel = await APIService.instance
-        .fetchChannel(channelId: 'UC6Dy0rQ6zDnQuHQ1EeErGUA');
+        .fetchChannel(channelId: 'UCszQrhvTSj2CrFazYCnwoGQ');
     setState(() {
       _channel = channel;
     });
@@ -149,7 +149,7 @@ class _LiveStreamState extends State<LiveStream> {
       drawer: AppDrawer(),
       appBar: AppBar(
         title: Text(
-          "Stream",
+          "Videos",
           style: appBarTextStyle,
         ),
         backgroundColor: appBarColor,
@@ -189,6 +189,8 @@ class _LiveStreamState extends State<LiveStream> {
                 return SizedBox.shrink();
               }
               Video video = _channel.videos[index - 1];
+              print(_channel);
+              print("Video Length ------------${_channel.videos.length}");
               return _buildVideo(video);
             },
           ),

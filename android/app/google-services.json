@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "83692552870",
+    "firebase_url": "https://churchexpress.firebaseio.com",
+    "project_id": "churchexpress",
+    "storage_bucket": "churchexpress.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:83692552870:android:8f89723dbe9fc04a92ea67",
+        "android_client_info": {
+          "package_name": "com.apollotech.church_express"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "83692552870-rn1nuq0nrt6el3c0hb9jqdndkt01agb3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFNC-qZuTzCvaGvL_FxzzekrMIGB1yiLw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "83692552870-rn1nuq0nrt6el3c0hb9jqdndkt01agb3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
