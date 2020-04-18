@@ -1,3 +1,5 @@
+import 'package:bmprogresshud/bmprogresshud.dart';
+import 'package:church_express/screens/authentication/preferences.dart';
 import 'package:church_express/screens/authentication/sign_up.dart';
 import 'package:church_express/screens/authentication/user_model.dart';
 import 'package:church_express/screens/welcome.dart';
@@ -6,6 +8,8 @@ import 'package:church_express/utils/text_styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:progress_hud/progress_hud.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -14,7 +18,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   UserModel userModel;
 
@@ -28,8 +32,19 @@ class _LoginState extends State<Login> {
     super.initState();
   }
 
+  ProgressDialog si;
+
   @override
   Widget build(BuildContext context) {
+    si = ProgressDialog(context,
+        showLogs: true, isDismissible: false);
+    si.style(
+      message: "Logging in ...",
+      elevation: 10.0,
+      messageTextStyle: videoTitleStyle,
+      insetAnimCurve: Curves.easeInOut,
+    );
+
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -127,7 +142,9 @@ class _LoginState extends State<Login> {
                           children: <Widget>[
                             Expanded(
                               child: FlatButton(
-                                onPressed: () => _handleSubmit(),
+                                onPressed: () {
+                                  _handleSubmit();
+                                },
                                 padding: EdgeInsets.symmetric(vertical: 17.0),
                                 color: floatButtonColor,
                                 child: Text(
@@ -155,12 +172,18 @@ class _LoginState extends State<Login> {
 //                                      (_, Animation<double> animation, __, Widget child) {
 //                                    return new FadeTransition(opacity: animation, child: child);
 //                                  }));
-                          Navigator.push(context, PageRouteBuilder(
-                              pageBuilder: (BuildContext context, _, __) => SignUp(),
-                              transitionsBuilder:
-                                  (_, Animation<double> animation, __, Widget child) {
-                                return new FadeTransition(opacity: animation, child: child);
-                              }));
+                          Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                  pageBuilder: (BuildContext context, _, __) =>
+                                      SignUp(),
+                                  transitionsBuilder: (_,
+                                      Animation<double> animation,
+                                      __,
+                                      Widget child) {
+                                    return new FadeTransition(
+                                        opacity: animation, child: child);
+                                  }));
                         },
                         child: Text("New? Register"),
                       )
@@ -175,6 +198,7 @@ class _LoginState extends State<Login> {
 
   _handleSubmit() async {
     final FormState formState = formKey.currentState;
+    si.show();
     if (formState.validate()) {
       formState.save();
       try {
@@ -182,40 +206,46 @@ class _LoginState extends State<Login> {
                 email: _email, password: _password))
             .user;
         print("Logged in");
-        Navigator.pushReplacement(
-            context,
-            PageRouteBuilder(
-                pageBuilder: (BuildContext context, _, __) => Welcome(),
-                transitionsBuilder:
-                    (_, Animation<double> animation, __, Widget child) {
-                  return new FadeTransition(opacity: animation, child: child);
-                }));
+        si.hide().whenComplete(() {
+          setLoggedInPreference(true).then((bool committed) {
+            Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                    pageBuilder: (BuildContext context, _, __) => Welcome(),
+                    transitionsBuilder:
+                        (_, Animation<double> animation, __, Widget child) {
+                      return new FadeTransition(opacity: animation, child: child);
+                    }));
+          });
+        });
       } catch (error) {
-        if (error.code == 'ERROR_USER_NOT_FOUND') {
-          print('ERROR_EMAIL_ALREADY_IN_USE');
-          final snackBar = SnackBar(
-            content: Text('Oops! Wrong email or password'),
-            action: SnackBarAction(
-              label: 'Cancel',
-              onPressed: () {
-                // Some code to undo the change.
-              },
-            ),
-          );
-          scaffoldKey.currentState.showSnackBar(snackBar);
-        } else if (error.code == 'ERROR_WRONG_PASSWORD') {
-          print('ERROR_WEAK_PASSWORD');
-          final snackBar = SnackBar(
-            content: Text('Oops! Wrong email or password'),
-            action: SnackBarAction(
-              label: 'Cancel',
-              onPressed: () {
-                // Some code to undo the change.
-              },
-            ),
-          );
-          scaffoldKey.currentState.showSnackBar(snackBar);
-        } else {}
+        si.hide().whenComplete(() {
+          if (error.code == 'ERROR_USER_NOT_FOUND') {
+            print('ERROR_USER_NOT_FOUND');
+            final snackBar = SnackBar(
+              content: Text('Oops! Wrong email or password'),
+              action: SnackBarAction(
+                label: 'Cancel',
+                onPressed: () {
+                },
+              ),
+            );
+            _scaffoldKey.currentState.showSnackBar(snackBar);
+          } else if (error.code == 'ERROR_WRONG_PASSWORD') {
+            print('ERROR_WRONG_PASSWORD');
+            final snackBar = SnackBar(
+              content: Text('Oops! Weak Password'),
+              action: SnackBarAction(
+                label: 'Cancel',
+                onPressed: () {
+                  // Some code to undo the change.
+                },
+              ),
+            );
+            _scaffoldKey.currentState.showSnackBar(snackBar);
+          } else {
+          }
+        });
       }
     }
   }

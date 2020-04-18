@@ -1,3 +1,4 @@
+import 'package:church_express/screens/add_event.dart';
 import 'package:church_express/screens/give.dart';
 import 'package:church_express/screens/home.dart';
 import 'package:church_express/screens/giving.dart';
@@ -98,6 +99,24 @@ class AppDrawer extends StatelessWidget {
                     context,
                     PageRouteBuilder(
                         pageBuilder: (BuildContext context, _, __) => LiveStream(),
+                        transitionsBuilder:
+                            (_, Animation<double> animation, __, Widget child) {
+                          return new FadeTransition(
+                              opacity: animation, child: child);
+                        }));
+              }),
+          createDrawerItem(
+              icon: FontAwesomeIcons.stickyNote,
+              text: Text(
+                "Add Event",
+                style: drawerItemsStyle,
+              ),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                        pageBuilder: (BuildContext context, _, __) => AddEvent(),
                         transitionsBuilder:
                             (_, Animation<double> animation, __, Widget child) {
                           return new FadeTransition(

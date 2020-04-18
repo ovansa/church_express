@@ -25,7 +25,7 @@ class _LiveStreamState extends State<LiveStream> {
 
   _initChannel() async {
     Channel channel = await APIService.instance
-        .fetchChannel(channelId: 'UCszQrhvTSj2CrFazYCnwoGQ');
+        .fetchChannel(channelId: 'UC3rLoj87ctEHCcS7BuvIzkQ');
     setState(() {
       _channel = channel;
     });
@@ -109,18 +109,24 @@ class _LiveStreamState extends State<LiveStream> {
         ),
         child: Row(
           children: <Widget>[
-            Image(
-              width: 50.0,
-              image: NetworkImage(video.thumbnailUrl),
+            ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
+              child: Image(
+                width: 50.0,
+                image: NetworkImage(video.thumbnailUrl),
+              ),
             ),
             SizedBox(width: 10.0),
             Expanded(
-              child: Text(
-                video.title,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 12.0,
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                      video.title,
+                      style: videoTitleStyle
+                  ),
+                ],
               ),
             ),
           ],
@@ -179,21 +185,35 @@ class _LiveStreamState extends State<LiveStream> {
           }
           return false;
         },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0),
-          child: ListView.builder(
-            physics: BouncingScrollPhysics(),
-            itemCount: 1 + _channel.videos.length,
-            itemBuilder: (BuildContext context, int index) {
-              if (index == 0) {
-                return SizedBox.shrink();
-              }
-              Video video = _channel.videos[index - 1];
-              print(_channel);
-              print("Video Length ------------${_channel.videos.length}");
-              return _buildVideo(video);
-            },
-          ),
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: MediaQuery.of(context).size.height * 0.2,
+              child: Stack(
+                children: <Widget>[
+                  Image.asset("assets/banner.png", height: MediaQuery.of(context).size.height * 0.2,)
+                ],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: 1 + _channel.videos.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index == 0) {
+                      return SizedBox.shrink();
+                    }
+                    Video video = _channel.videos[index - 1];
+                    print(_channel);
+                    print("Video Length ------------${_channel.videos.length}");
+                    return _buildVideo(video);
+                  },
+                ),
+              ),
+            )
+          ],
         ),
       )
           : Center(

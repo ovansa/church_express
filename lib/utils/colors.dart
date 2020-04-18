@@ -7,3 +7,5 @@ Color activeTabColor = Color(0xFFFFDA1A);
 Color inactiveTabColor = Color(0xFFFFFFFF);
 
 Color floatButtonColor = Color(0xFFFFDA1A);
+
+Color splashScrnBgColor = Color(0xFFFFDA1A);

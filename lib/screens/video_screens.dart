@@ -1,3 +1,6 @@
+import 'package:church_express/utils/colors.dart';
+import 'package:church_express/utils/text_styles.dart';
+import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -12,6 +15,7 @@ class VideoScreen extends StatefulWidget {
 }
 
 class _VideoScreenState extends State<VideoScreen> {
+  final GlobalKey<ScaffoldState> _globalKey = new GlobalKey();
 
   YoutubePlayerController _controller;
 
@@ -30,7 +34,19 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      key: _globalKey,
+      appBar: AppBar(
+          title: Text(
+            "Welcome",
+            style: appBarTextStyle,
+          ),
+          backgroundColor: appBarColor,
+          leading: IconButton(
+              icon: Image.asset("assets/icons/drawer_icon.png"),
+              onPressed: () {
+                _globalKey.currentState.openDrawer();
+              })),
+      drawer: AppDrawer(),
       body: YoutubePlayer(
         controller: _controller,
         showVideoProgressIndicator: true,

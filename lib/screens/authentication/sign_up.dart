@@ -1,4 +1,5 @@
 import 'package:church_express/screens/authentication/login.dart';
+import 'package:church_express/screens/authentication/preferences.dart';
 import 'package:church_express/screens/authentication/user_model.dart';
 import 'package:church_express/screens/welcome.dart';
 import 'package:church_express/utils/colors.dart';
@@ -7,7 +8,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:progress_hud/progress_hud.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -27,40 +30,26 @@ class _SignUpState extends State<SignUp> {
   String _password;
   String _name;
 
-  ProgressHUD _progressHUD;
-
   bool _loading = false;
+
+  ProgressDialog su;
+
 
   @override
   void initState() {
     super.initState();
-//    userModel = UserModel("", "", "");
-//    databaseReference = firebaseDatabase.reference().child("user_details");
-
-    _progressHUD = new ProgressHUD(
-      backgroundColor: Colors.black12,
-      color: Colors.white,
-      containerColor: Colors.blue,
-      borderRadius: 5.0,
-      text: 'Loading...',
-    );
   }
-
-//  void dismissProgressHUD() {
-//    setState(() {
-//      if (_loading) {
-//        _progressHUD.state.dismiss();
-//      } else {
-//        _progressHUD.state.show();
-//      }
-//
-//      _loading = !_loading;
-//    });
-//  }
 
   @override
   Widget build(BuildContext context) {
-
+    su = ProgressDialog(context,
+        showLogs: true, isDismissible: false);
+    su.style(
+      message: "Creating account ...",
+      elevation: 10.0,
+      messageTextStyle: videoTitleStyle,
+      insetAnimCurve: Curves.easeInOut,
+    );
 
     return Scaffold(
       key: scaffoldKey,
@@ -213,20 +202,18 @@ class _SignUpState extends State<SignUp> {
                       ),
                       GestureDetector(
                         onTap: () {
-//                          Navigator.pushReplacement(
-//                              context,
-//                              PageRouteBuilder(
-//                                  pageBuilder: (BuildContext context, _, __) => Welcome(),
-//                                  transitionsBuilder:
-//                                      (_, Animation<double> animation, __, Widget child) {
-//                                    return new FadeTransition(opacity: animation, child: child);
-//                                  }));
-                          Navigator.push(context, PageRouteBuilder(
-                              pageBuilder: (BuildContext context, _, __) => Login(),
-                              transitionsBuilder:
-                                  (_, Animation<double> animation, __, Widget child) {
-                                return new FadeTransition(opacity: animation, child: child);
-                              }));
+                          Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                  pageBuilder: (BuildContext context, _, __) =>
+                                      Login(),
+                                  transitionsBuilder: (_,
+                                      Animation<double> animation,
+                                      __,
+                                      Widget child) {
+                                    return new FadeTransition(
+                                        opacity: animation, child: child);
+                                  }));
                         },
                         child: Text("Have Account? Login"),
                       )
@@ -241,51 +228,61 @@ class _SignUpState extends State<SignUp> {
 
   _handleSubmit() async {
     final FormState formState = formKey.currentState;
-    if(formState.validate()) {
+    su.show();
+    if (formState.validate()) {
       formState.save();
       try {
-        FirebaseUser user = (await firebaseAuth.createUserWithEmailAndPassword(email: _email, password: _password)).user;
+        FirebaseUser user = (await firebaseAuth.createUserWithEmailAndPassword(
+                email: _email, password: _password))
+            .user;
         UserUpdateInfo userUpdateInfo = UserUpdateInfo();
         userUpdateInfo.displayName = _name;
-        user.updateProfile(userUpdateInfo).then((onValue) {
-          print("Signed Up and Logged in");
-          Navigator.pushReplacement(context, PageRouteBuilder(
-              pageBuilder: (BuildContext context, _, __) => Welcome(),
-              transitionsBuilder:
-                  (_, Animation<double> animation, __, Widget child) {
-                return new FadeTransition(
-                    opacity: animation, child: child);
-              }));
+        su.hide();
+        setLoggedInPreference(true).then((bool committed){
+          user.updateProfile(userUpdateInfo).then((onValue) async {
+            print("Signed Up and Logged in");
+            su.hide().whenComplete(() {
+              Navigator.pushReplacement(
+                  context,
+                  PageRouteBuilder(
+                      pageBuilder: (BuildContext context, _, __) => Welcome(),
+                      transitionsBuilder:
+                          (_, Animation<double> animation, __, Widget child) {
+                        return new FadeTransition(opacity: animation, child: child);
+                      }));
+            });
+          });
         });
       } catch (error) {
-        if (error.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
-          print('ERROR_EMAIL_ALREADY_IN_USE');
-          final snackBar = SnackBar(
-            content: Text('Oops! Email already in use.'),
-            action: SnackBarAction(
-              label: 'Cancel',
-              onPressed: () {
-                // Some code to undo the change.
-              },
-            ),
-          );
-          scaffoldKey.currentState.showSnackBar(snackBar);
-        } else if (error.code == 'ERROR_WEAK_PASSWORD') {
-          print('ERROR_WEAK_PASSWORD');
-          final snackBar = SnackBar(
-            content: Text('Oops! Weak Password'),
-            action: SnackBarAction(
-              label: 'Cancel',
-              onPressed: () {
-                // Some code to undo the change.
-              },
-            ),
-          );
-          scaffoldKey.currentState.showSnackBar(snackBar);
-        } else {
-
-        }
+        su.hide().whenComplete(() {
+          if (error.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
+            print('ERROR_EMAIL_ALREADY_IN_USE');
+            final snackBar = SnackBar(
+              content: Text('Oops! Email already in use.'),
+              action: SnackBarAction(
+                label: 'Cancel',
+                onPressed: () {
+                  // Some code to undo the change.
+                },
+              ),
+            );
+            scaffoldKey.currentState.showSnackBar(snackBar);
+          } else if (error.code == 'ERROR_WEAK_PASSWORD') {
+            print('ERROR_WEAK_PASSWORD');
+            final snackBar = SnackBar(
+              content: Text('Oops! Weak Password'),
+              action: SnackBarAction(
+                label: 'Cancel',
+                onPressed: () {
+                  // Some code to undo the change.
+                },
+              ),
+            );
+            scaffoldKey.currentState.showSnackBar(snackBar);
+          } else {}
+        });
       }
     }
   }
+
 }

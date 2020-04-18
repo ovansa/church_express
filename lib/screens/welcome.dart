@@ -1,4 +1,5 @@
 import 'package:church_express/models/events.dart';
+import 'package:church_express/screens/event_list2.dart';
 import 'package:church_express/services/firebase_auth.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
@@ -42,7 +43,7 @@ class _WelcomeState extends State<Welcome> {
       drawer: AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        child: EventItem()
+        child: EventItem2()
       ),
       bottomNavigationBar: BottomNavigationBar(
           backgroundColor: bottomNavBarColor,

@@ -14,6 +14,19 @@ class Give extends StatefulWidget {
 
 class _GiveState extends State<Give> {
   var publicKey = 'pk_test_b80c8aeef509570aaf0654e8e768d1a3ec0e605c';
+
+  final GlobalKey<ScaffoldState> _scaffoldlKey = new GlobalKey();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String _cardNumber;
+  String _cvv;
+  int _expiryMonth = 0;
+  int _expiryYear = 0;
+  int _amountToDonate = 500000;
+  String _email;
+
+  bool _inProgress = false;
+
   @override
   void initState() {
     PaystackPlugin.initialize(publicKey: publicKey);
@@ -22,47 +35,149 @@ class _GiveState extends State<Give> {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> _scaffoldlKey = new GlobalKey();
-    final _formKey = GlobalKey<FormState>();
 
-    String _cardNumber;
-    String _cvv;
-    int _expiryMonth = 0;
-    int _expiryYear = 0;
-    int _amountToDonate = 0;
+    return Scaffold(
+      key: _scaffoldlKey,
+      appBar: AppBar(
+          title: Text(
+            "Welcome",
+            style: appBarTextStyle,
+          ),
+          backgroundColor: appBarColor,
+          leading: IconButton(
+              icon: Image.asset("assets/icons/drawer_icon.png"),
+              onPressed: () {
+                _scaffoldlKey.currentState.openDrawer();
+              })),
+      drawer: AppDrawer(),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  "Give",
+                  style: welcomeTitle,
+                ),
+              ),
+              SizedBox(
+                height: 30.0,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  "Give onto the lord",
+                  style: welcomeSubTitle,
+                ),
+              ),
+              SizedBox(
+                height: 30.0,
+              ),
+              Form(
+                  key: _formKey,
+                  child: Flex(
+                    direction: Axis.vertical,
+                    children: <Widget>[
+                      ListTile(
 
-    bool _inProgress = false;
+                        title: TextFormField(
+                          style: welcomeTextField,
+                          decoration: InputDecoration(
+                              hintText: "Enter Amount",
+                              hintStyle: welcomeTextField,
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(15.0)),
+                                borderSide: BorderSide(
+                                  color: Colors.black.withOpacity(0.6),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(15.0)),
+                                borderSide: BorderSide(
+                                    color: Colors.black.withOpacity(0.8),
+                                    width: 1.5),
+                              ),
+                              labelText: 'Enter Amount',
+                              labelStyle: welcomeTextField),
+                          initialValue: "",
+                          onSaved: (val) => _amountToDonate = int.tryParse(val) * 100,
+                          validator: (val) =>
+                          val == "" ? "Enter Amount" : null,
+                        ),
+                      ),
+                      SizedBox(height: 20.0,),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: FlatButton(
+                                onPressed: () {
+                                  _handleCheckout(context);
+                                },
+                                padding: EdgeInsets.symmetric(vertical: 17.0),
+                                color: floatButtonColor,
+                                child: Text(
+                                  "Give",
+                                  style: welcomeSubmitButton,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                    ],
+                  ))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
-    PaymentCard _getCardFromUI() {
-      // Using just the must-required parameters.
-      return PaymentCard(
-        number: _cardNumber,
-        cvc: _cvv,
-        expiryMonth: _expiryMonth,
-        expiryYear: _expiryYear,
-      );
+
+
+  PaymentCard _getCardFromUI() {
+    // Using just the must-required parameters.
+    return PaymentCard(
+      number: _cardNumber,
+      cvc: _cvv,
+      expiryMonth: _expiryMonth,
+      expiryYear: _expiryYear,
+    );
+  }
+
+  String _getReference() {
+    String platform;
+    if (Platform.isIOS) {
+      platform = 'iOS';
+    } else {
+      platform = 'Android';
     }
 
-    String _getReference() {
-      String platform;
-      if (Platform.isIOS) {
-        platform = 'iOS';
-      } else {
-        platform = 'Android';
-      }
+    return 'ChargedFrom${platform}_${DateTime.now().millisecondsSinceEpoch}';
+  }
 
-      return 'ChargedFrom${platform}_${DateTime.now().millisecondsSinceEpoch}';
-    }
+  _showTheMessage(String message,
+      [Duration duration = const Duration(seconds: 4)]) {
+    print(message);
+  }
 
-    _showTheMessage(String message,
-        [Duration duration = const Duration(seconds: 4)]) {
-      print(message);
-    }
-
-    _updateStatus(String reference, String message) {
-      _showTheMessage('Reference: $reference \n\ Response: $message',
-          const Duration(seconds: 7));
-    }
+  _updateStatus(String reference, String message) {
+    _showTheMessage('Reference: $reference \n\ Response: $message',
+        const Duration(seconds: 7));
+  }
 
 //    _showMessage(String message,
 //        [Duration duration = const Duration(seconds: 4)]) {
@@ -74,10 +189,14 @@ class _GiveState extends State<Give> {
 //            onPressed: () => _scaffoldKey.currentState.removeCurrentSnackBar()),
 //      ));
 //    }
-    _handleCheckout(BuildContext context) async   {
-      _formKey.currentState.save();
+  _handleCheckout(BuildContext context) async   {
+    final FormState formState = _formKey.currentState;
+    print("Start validation");
+    if (formState.validate()) {
+      print("Validated");
+      formState.save();
       Charge charge = Charge()
-        ..amount = 10000 // In base currency
+        ..amount = _amountToDonate // In base currency
         ..email = 'customer@email.com'
         ..card = _getCardFromUI();
 
@@ -101,69 +220,7 @@ class _GiveState extends State<Give> {
         rethrow;
       }
     }
-
-    return Scaffold(
-      key: _scaffoldlKey,
-      appBar: AppBar(
-          title: Text(
-            "Welcome",
-            style: appBarTextStyle,
-          ),
-          backgroundColor: appBarColor,
-          leading: IconButton(
-              icon: Image.asset("assets/icons/drawer_icon.png"),
-              onPressed: () {
-                _scaffoldlKey.currentState.openDrawer();
-              })),
-      drawer: AppDrawer(),
-      body: Center(
-        child: Container(
-          padding: EdgeInsets.all(8.0),
-          child: Form(
-            key: _formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: 20.0,),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        labelText: 'Amount',
-                        labelStyle: TextStyle(fontSize: 16.0)
-                      ),
-                      onSaved: (String value) => _amountToDonate = int.tryParse(value),
-                    ),
-                    SizedBox(height: 20.0,),
-                    Row(
-                      children: <Widget>[
-                        Expanded(child: RaisedButton(
-                          onPressed: (){
-                            print("Paystack Card UI");
-                            _handleCheckout(context);
-                          },
-                          color: Color(0xFFFFDA1A),
-                          textColor: Color(0xFF000000),
-                          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-                          child: Text("Paystack Card UI",
-                            style: GoogleFonts.montserrat(fontSize: 17.0),
-                          ),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0)
-                          ),
-                        ))
-                      ],
-                    ),
-                  ],
-                ),
-              )),
-        ),
-      ),
-    );
   }
-
 }
 class MyLogo extends StatelessWidget {
   @override
@@ -186,4 +243,3 @@ class MyLogo extends StatelessWidget {
     );
   }
 }
-

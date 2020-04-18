@@ -22,3 +22,10 @@ TextStyle welcomeTitle = GoogleFonts.montserrat(fontSize: 30.0, color: Color(0xF
 TextStyle welcomeSubTitle = GoogleFonts.montserrat(fontSize: 15.0, color: Color(0xFF000000), fontWeight: FontWeight.w400);
 TextStyle welcomeTextField = GoogleFonts.montserrat(fontSize: 14.0, color: Color(0xFF000000), fontWeight: FontWeight.w300);
 TextStyle welcomeSubmitButton = GoogleFonts.montserrat(fontSize: 17.0, color: Color(0xFF000000), fontWeight: FontWeight.w500);
+
+TextStyle videoTitleStyle = GoogleFonts.montserrat(fontSize: 11.0, color: Color(0xFF000000), fontWeight: FontWeight.w400);
+
+TextStyle splashHeaderStyle = GoogleFonts.montserrat(fontSize: 18.0, color: Color(0xFF262F3A), fontWeight: FontWeight.w600);
+TextStyle splashDescrStyle = GoogleFonts.montserrat(fontSize: 14.0, color: Color(0xFF262F3A), fontWeight: FontWeight.w400);
+
+TextStyle bibleTitleStyle = GoogleFonts.montserrat(fontSize: 13.0, color: Color(0xFF262F3A), fontWeight: FontWeight.w500);
