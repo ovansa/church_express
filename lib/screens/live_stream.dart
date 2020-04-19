@@ -25,7 +25,7 @@ class _LiveStreamState extends State<LiveStream> {
 
   _initChannel() async {
     Channel channel = await APIService.instance
-        .fetchChannel(channelId: 'UC3rLoj87ctEHCcS7BuvIzkQ');
+        .fetchChannel(channelId: 'UC7ZYorKcV5D3VGcHosp-Eag');
     setState(() {
       _channel = channel;
     });
@@ -164,15 +164,15 @@ class _LiveStreamState extends State<LiveStream> {
             onPressed: () {
               _globalKey.currentState.openDrawer();
             }),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              FontAwesomeIcons.search,
-              color: Color(0xFFFFFFFF),
-              size: 14.0,
-            ),
-          )
-        ],
+//        actions: <Widget>[
+//          IconButton(
+//            icon: Icon(
+//              FontAwesomeIcons.search,
+//              color: Color(0xFFFFFFFF),
+//              size: 14.0,
+//            ),
+//          )
+//        ],
       ),
       body: _channel != null
           ? NotificationListener<ScrollNotification>(
@@ -181,6 +181,7 @@ class _LiveStreamState extends State<LiveStream> {
               _channel.videos.length != int.parse(_channel.videoCount) &&
               scrollDetails.metrics.pixels ==
                   scrollDetails.metrics.maxScrollExtent) {
+            print(_channel.videos[0].channelTitle);
             _loadMoreVideos();
           }
           return false;
@@ -206,8 +207,6 @@ class _LiveStreamState extends State<LiveStream> {
                       return SizedBox.shrink();
                     }
                     Video video = _channel.videos[index - 1];
-                    print(_channel);
-                    print("Video Length ------------${_channel.videos.length}");
                     return _buildVideo(video);
                   },
                 ),

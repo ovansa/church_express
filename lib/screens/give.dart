@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:church_express/screens/authentication/preferences.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
@@ -30,6 +31,12 @@ class _GiveState extends State<Give> {
   @override
   void initState() {
     PaystackPlugin.initialize(publicKey: publicKey);
+    getEmailPreference().then((email){
+      setState(() {
+        _email = email;
+        print(_email);
+      });
+    });
   }
 
 
@@ -193,13 +200,15 @@ class _GiveState extends State<Give> {
     final FormState formState = _formKey.currentState;
     print("Start validation");
     if (formState.validate()) {
+
       print("Validated");
       formState.save();
       Charge charge = Charge()
         ..amount = _amountToDonate // In base currency
-        ..email = 'customer@email.com'
+        ..email = _email
         ..card = _getCardFromUI();
 
+      print(_email);
       charge.reference = _getReference();
 
       try {

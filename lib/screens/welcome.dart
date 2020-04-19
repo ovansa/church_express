@@ -45,55 +45,55 @@ class _WelcomeState extends State<Welcome> {
         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         child: EventItem2()
       ),
-      bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: bottomNavBarColor,
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _currentIndex,
-          selectedItemColor: activeTabColor,
-          unselectedItemColor: inactiveTabColor,
-          selectedFontSize: 12.0,
-          unselectedFontSize: 10.0,
-          onTap: onTabTapped,
-          items: [
-            BottomNavigationBarItem(
-              icon: new Icon(
-                FontAwesomeIcons.cross,
-                size: 16.0,
-              ),
-              title: new Text(
-                'Welcome',
-                style: bottomNavBarTextStyle,
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: new Icon(
-                FontAwesomeIcons.playCircle,
-                size: 16.0,
-              ),
-              title: new Text(
-                'Live Stream',
-                style: bottomNavBarTextStyle,
-              ),
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  FontAwesomeIcons.mapMarkerAlt,
-                  size: 16.0,
-                ),
-                title: Text(
-                  'Location',
-                  style: bottomNavBarTextStyle,
-                )),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  FontAwesomeIcons.bible,
-                  size: 16.0,
-                ),
-                title: Text(
-                  'Bible',
-                  style: bottomNavBarTextStyle,
-                ))
-          ]),
+//      bottomNavigationBar: BottomNavigationBar(
+//          backgroundColor: bottomNavBarColor,
+//          type: BottomNavigationBarType.fixed,
+//          currentIndex: _currentIndex,
+//          selectedItemColor: activeTabColor,
+//          unselectedItemColor: inactiveTabColor,
+//          selectedFontSize: 12.0,
+//          unselectedFontSize: 10.0,
+//          onTap: onTabTapped,
+//          items: [
+//            BottomNavigationBarItem(
+//              icon: new Icon(
+//                FontAwesomeIcons.cross,
+//                size: 16.0,
+//              ),
+//              title: new Text(
+//                'Welcome',
+//                style: bottomNavBarTextStyle,
+//              ),
+//            ),
+//            BottomNavigationBarItem(
+//              icon: new Icon(
+//                FontAwesomeIcons.playCircle,
+//                size: 16.0,
+//              ),
+//              title: new Text(
+//                'Live Stream',
+//                style: bottomNavBarTextStyle,
+//              ),
+//            ),
+//            BottomNavigationBarItem(
+//                icon: Icon(
+//                  FontAwesomeIcons.mapMarkerAlt,
+//                  size: 16.0,
+//                ),
+//                title: Text(
+//                  'Location',
+//                  style: bottomNavBarTextStyle,
+//                )),
+//            BottomNavigationBarItem(
+//                icon: Icon(
+//                  FontAwesomeIcons.bible,
+//                  size: 16.0,
+//                ),
+//                title: Text(
+//                  'Bible',
+//                  style: bottomNavBarTextStyle,
+//                ))
+//          ]),
     );
   }
 

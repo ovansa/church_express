@@ -29,3 +29,5 @@ TextStyle splashHeaderStyle = GoogleFonts.montserrat(fontSize: 18.0, color: Colo
 TextStyle splashDescrStyle = GoogleFonts.montserrat(fontSize: 14.0, color: Color(0xFF262F3A), fontWeight: FontWeight.w400);
 
 TextStyle bibleTitleStyle = GoogleFonts.montserrat(fontSize: 13.0, color: Color(0xFF262F3A), fontWeight: FontWeight.w500);
+TextStyle bibleChapterStyle = GoogleFonts.montserrat(fontSize: 18.0, color: Color(0xFF262F3A), fontWeight: FontWeight.w500);
+TextStyle bibleContentStyle = GoogleFonts.montserrat(fontSize: 12.0, color: Color(0xFF262F3A), fontWeight: FontWeight.w400);

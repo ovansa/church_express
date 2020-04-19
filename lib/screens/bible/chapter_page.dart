@@ -1,3 +1,5 @@
+import 'package:church_express/utils/colors.dart';
+import 'package:church_express/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
@@ -43,29 +45,56 @@ class _ChapterPageState extends State<ChapterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(child: FutureBuilder(
-            future: theChapter,
-            builder: (BuildContext context, AsyncSnapshot<Chapter> snapshot) {
-              if(snapshot.hasData) {
-                return Html(data: snapshot.data.data.content,
-                  customRender: (node, children) {
-                    if (node is dom.Element) {
-                      switch (node.localName) {
-                        case "custom_tag":
-                          return Column(children: children);
-                      }
+      appBar: AppBar(
+          title: Text(
+            "Bible - King James Version",
+            style: appBarTextStyle,
+          ),
+          backgroundColor: appBarColor,
+          ),
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+          child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Text(widget.reference, style: bibleChapterStyle,),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: FutureBuilder(
+                  future: theChapter,
+                  builder: (BuildContext context, AsyncSnapshot<Chapter> snapshot) {
+                    if(snapshot.hasData) {
+                      return Html(data: snapshot.data.data.content,
+                        useRichText: true,
+                        defaultTextStyle: bibleContentStyle,
+                        renderNewlines: true,
+                        customTextStyle: (dom.Node node, TextStyle baseStyle) {
+                          if (node is dom.Element) {
+                            switch (node.localName) {
+                              case "p":
+                                return baseStyle.merge(TextStyle(height: 2, fontSize: 12));
+                              case "v":
+                                return baseStyle.merge(TextStyle(height: 10, fontSize: 12, ));
+                            }
+                          }
+                          return baseStyle;
+                        },
+                      );
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(appBarColor),),
+                      );
                     }
-                    return null;
-                  },
-                );
-              } else {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            })),
-      ),
+                  }),
+            )
+          ],
+        ),
+      ))
     );
   }
 }

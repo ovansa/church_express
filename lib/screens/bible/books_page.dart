@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:church_express/screens/bible/books.dart';
 import 'package:church_express/screens/bible/chapter_list_page.dart';
+import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
+import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,6 +14,8 @@ class BookPage extends StatefulWidget {
 }
 
 class _BookPageState extends State<BookPage> {
+  final GlobalKey<ScaffoldState> _globalKey = new GlobalKey();
+
   Future<Books> fetchTheBooks() async {
     http.Response response = await http.get(
         'https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/books',
@@ -37,6 +41,19 @@ class _BookPageState extends State<BookPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _globalKey,
+        appBar: AppBar(
+            title: Text(
+              "Bible - King James Version",
+              style: appBarTextStyle,
+            ),
+            backgroundColor: appBarColor,
+            leading: IconButton(
+                icon: Image.asset("assets/icons/drawer_icon.png"),
+                onPressed: () {
+                  _globalKey.currentState.openDrawer();
+                })),
+        drawer: AppDrawer(),
         body: Padding(
           padding:
           const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -85,7 +102,7 @@ class _BookPageState extends State<BookPage> {
                       });
                 } else {
                   return Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(appBarColor),),
                   );
                 }
               }),

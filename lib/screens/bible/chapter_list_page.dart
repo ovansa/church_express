@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:church_express/screens/bible/chapter_list.dart';
 import 'package:church_express/screens/bible/chapter_page.dart';
+import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -34,13 +35,19 @@ class _ChapterListPageState extends State<ChapterListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          title: Text(
+            "Bible - King James Version",
+            style: appBarTextStyle,
+          ),
+          backgroundColor: appBarColor,
+          ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 30.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0), child: Text("Chapters ${widget.bookId}")),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0), child: Text(widget.bookName),
+            Padding(padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0), child: Text(widget.bookName, style: bibleChapterStyle,),
               ),
             Expanded(
               child: FutureBuilder(
@@ -50,7 +57,7 @@ class _ChapterListPageState extends State<ChapterListPage> {
                   return GridView.count(crossAxisCount: 7,
                     padding: EdgeInsets.all(8.0),
                     crossAxisSpacing: 8.0,
-                    mainAxisSpacing: 30.0,
+                    mainAxisSpacing: 20.0,
                     children: List.generate(snapshot.data.data.length, (index) {
                       Data single = snapshot.data.data[index];
                       return GestureDetector(
@@ -81,7 +88,7 @@ class _ChapterListPageState extends State<ChapterListPage> {
                   );
                 } else {
                   return Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(appBarColor),),
                   );
                 }
               }),

@@ -15,6 +15,18 @@ Future<bool> getLoggedInPreference () async {
   return isLoggedIn;
 }
 
+Future<bool> setEmailPreference (String email) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString("_email", email);
+  return prefs.commit();
+}
+
+Future<String> getEmailPreference () async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String email = prefs.getString("_email");
+  return email;
+}
+
 ProgressDialog showProgress(BuildContext context, String message) {
   ProgressDialog rp;
   rp = new ProgressDialog(context,

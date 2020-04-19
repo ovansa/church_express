@@ -4,11 +4,22 @@ import 'package:church_express/models/events.dart';
 import 'package:church_express/screens/authentication/event_model.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_format/date_format.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart' as eve;
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+
+class DateUtil {
+  static const DATE_FORMAT = 'dd/MM/yyyy';
+  String formattedDate(DateTime dateTime) {
+    print('dateTime ($dateTime)');
+    return DateFormat(DATE_FORMAT).format(dateTime);
+  }
+}
 
 class EventItem2 extends StatefulWidget {
   @override
@@ -42,17 +53,38 @@ class _EventItem2State extends State<EventItem2> {
     return FirebaseAnimatedList(
       physics: BouncingScrollPhysics(),
         query: databaseReference,
-        reverse: true,
+        reverse: false,
         itemBuilder:
             (_, DataSnapshot snapshot, Animation<double> animation, int index) {
+        if(snapshot.value != null) {
           cal.Event addEvent = cal.Event(
-            title: 'Test event',
-            description: 'example',
+            title: eventList[index].eventTitle,
+            description: eventList[index].eventTitle,
             location: 'Flutter app',
-            startDate: DateTime.now(),
-            endDate: DateTime.now().add(Duration(days: 1)),
+            startDate: DateTime.parse(eventList[index].date).toUtc(),
+            endDate: DateTime.parse(eventList[index].date).toUtc(),
             allDay: false,
           );
+
+//          print(eventList[index].date);
+//          DateTime d = DateUtil().formattedDate(DateTime.parse(eventList[index].date).toLocal());
+//          print(DateTime.parse(eventList[index].date+" "+eventList[index].time).toUtc());
+          print(DateFormat.yMMMd().format(DateTime.parse(eventList[index].date).toUtc()));
+
+
+
+
+//          print(formatDate(DateTime.parse(eventList[index].date), [yyyy, '/', mm, '/', dd,]));
+          void convertDateFromString(String strDate){
+//            DateTime todayDate = DateTime.parse("7/10/1996 10:07:23");
+//            print(todayDate);
+            print(DateFormat.yMMMd().parse(eventList[index].date).millisecondsSinceEpoch);
+            Timestamp stamp = Timestamp.fromDate(DateFormat.yMMMd().parse(strDate));
+            print(stamp);
+//            print(formatDate(todayDate, [yyyy, '/', mm, '/', dd, ' ', hh, ':', nn, ':', ss, ' ', am]));
+          }
+
+//          convertDateFromString(eventList[index].date);
 
           return Column(
             children: <Widget>[
@@ -89,14 +121,14 @@ class _EventItem2State extends State<EventItem2> {
                               ),
                               Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        eventList[index].date,
+                                        DateFormat.yMMMd().format(DateTime.parse(eventList[index].date).toUtc()),
                                         style: welcomeDateTitle,
                                       ),
                                       Text(
@@ -129,7 +161,7 @@ class _EventItem2State extends State<EventItem2> {
                                       decoration: BoxDecoration(
                                           color: Color(0xFF262F3A),
                                           borderRadius:
-                                              BorderRadius.circular(5.0)),
+                                          BorderRadius.circular(5.0)),
                                     ),
                                   )
                                 ],
@@ -163,6 +195,12 @@ class _EventItem2State extends State<EventItem2> {
               )
             ],
           );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(appBarColor),),
+          );
+        }
+
         });
   }
 

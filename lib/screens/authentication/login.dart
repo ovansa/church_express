@@ -1,4 +1,3 @@
-import 'package:bmprogresshud/bmprogresshud.dart';
 import 'package:church_express/screens/authentication/preferences.dart';
 import 'package:church_express/screens/authentication/sign_up.dart';
 import 'package:church_express/screens/authentication/user_model.dart';
@@ -9,7 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:progress_hud/progress_hud.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -27,25 +25,17 @@ class _LoginState extends State<Login> {
   String _email;
   String _password;
 
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
   }
 
-  ProgressDialog si;
-
   @override
   Widget build(BuildContext context) {
-    si = ProgressDialog(context,
-        showLogs: true, isDismissible: false);
-    si.style(
-      message: "Logging in ...",
-      elevation: 10.0,
-      messageTextStyle: videoTitleStyle,
-      insetAnimCurve: Curves.easeInOut,
-    );
-
     return Scaffold(
+      key: _scaffoldKey,
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -98,7 +88,7 @@ class _LoginState extends State<Login> {
                               labelText: 'Email',
                               labelStyle: welcomeTextField),
                           initialValue: "",
-                          onSaved: (val) => _email = val,
+                          onSaved: (val) => _email = val.trim(),
                           validator: (val) =>
                               val == "" ? "Email is required" : null,
                         ),
@@ -142,19 +132,21 @@ class _LoginState extends State<Login> {
                           children: <Widget>[
                             Expanded(
                               child: FlatButton(
-                                onPressed: () {
-                                  _handleSubmit();
-                                },
-                                padding: EdgeInsets.symmetric(vertical: 17.0),
-                                color: floatButtonColor,
-                                child: Text(
-                                  "Submit",
-                                  style: welcomeSubmitButton,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(18.0),
-                                ),
-                              ),
+                                      onPressed: () {
+                                        _handleSubmit();
+                                      },
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 17.0),
+                                      color: floatButtonColor,
+                                      child: Text(
+                                        "Submit",
+                                        style: welcomeSubmitButton,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            new BorderRadius.circular(18.0),
+                                      ),
+                                    ),
                             )
                           ],
                         ),
@@ -188,7 +180,7 @@ class _LoginState extends State<Login> {
                         child: Text("New? Register"),
                       )
                     ],
-                  ))
+                  )),
             ],
           ),
         ),
@@ -198,55 +190,77 @@ class _LoginState extends State<Login> {
 
   _handleSubmit() async {
     final FormState formState = formKey.currentState;
-    si.show();
+
     if (formState.validate()) {
       formState.save();
-      try {
-        FirebaseUser user = (await firebaseAuth.signInWithEmailAndPassword(
-                email: _email, password: _password))
-            .user;
-        print("Logged in");
-        si.hide().whenComplete(() {
-          setLoggedInPreference(true).then((bool committed) {
-            Navigator.pushReplacement(
-                context,
-                PageRouteBuilder(
-                    pageBuilder: (BuildContext context, _, __) => Welcome(),
-                    transitionsBuilder:
-                        (_, Animation<double> animation, __, Widget child) {
-                      return new FadeTransition(opacity: animation, child: child);
-                    }));
-          });
+      print("Valid");
+      CircularProgressIndicator();
+      firebaseAuth.signInWithEmailAndPassword(email: _email, password: _password).then((result){
+        print("It worked!");
+        setEmailPreference(_email);
+        setLoggedInPreference(true).then((bool committed) {
+          Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                  pageBuilder: (BuildContext context, _, __) => Welcome(),
+                  transitionsBuilder:
+                      (_, Animation<double> animation, __, Widget child) {
+                    return new FadeTransition(opacity: animation, child: child);
+                  }));
         });
-      } catch (error) {
-        si.hide().whenComplete(() {
-          if (error.code == 'ERROR_USER_NOT_FOUND') {
-            print('ERROR_USER_NOT_FOUND');
-            final snackBar = SnackBar(
-              content: Text('Oops! Wrong email or password'),
-              action: SnackBarAction(
-                label: 'Cancel',
-                onPressed: () {
-                },
-              ),
-            );
-            _scaffoldKey.currentState.showSnackBar(snackBar);
-          } else if (error.code == 'ERROR_WRONG_PASSWORD') {
-            print('ERROR_WRONG_PASSWORD');
-            final snackBar = SnackBar(
-              content: Text('Oops! Weak Password'),
-              action: SnackBarAction(
-                label: 'Cancel',
-                onPressed: () {
-                  // Some code to undo the change.
-                },
-              ),
-            );
-            _scaffoldKey.currentState.showSnackBar(snackBar);
-          } else {
-          }
-        });
-      }
+      }).catchError((error){
+        print(error.message);
+        final snackBar = SnackBar(
+            content: Text(error.message),
+            action: SnackBarAction(
+              label: 'Cancel',
+              onPressed: () {
+                // Some code to undo the change.
+              },
+            ),
+          );
+          _scaffoldKey.currentState.showSnackBar(snackBar);
+      });
+//      try {
+//        FirebaseUser user = (await firebaseAuth.signInWithEmailAndPassword(
+//                email: _email, password: _password))
+//            .user;
+//        print("Logged in");
+//        setLoggedInPreference(true).then((bool committed) {
+//          Navigator.pushReplacement(
+//              context,
+//              PageRouteBuilder(
+//                  pageBuilder: (BuildContext context, _, __) => Welcome(),
+//                  transitionsBuilder:
+//                      (_, Animation<double> animation, __, Widget child) {
+//                    return new FadeTransition(opacity: animation, child: child);
+//                  }));
+//        });
+//      } catch (error) {
+//        if (error.code == 'ERROR_USER_NOT_FOUND') {
+//          print('ERROR_USER_NOT_FOUND');
+//          final snackBar = SnackBar(
+//            content: Text('Oops! Wrong email or password'),
+//            action: SnackBarAction(
+//              label: 'Cancel',
+//              onPressed: () {},
+//            ),
+//          );
+//          _scaffoldKey.currentState.showSnackBar(snackBar);
+//        } else if (error.code == 'ERROR_WRONG_PASSWORD') {
+//          print('ERROR_WRONG_PASSWORD');
+//          final snackBar = SnackBar(
+//            content: Text('Oops! Weak Password'),
+//            action: SnackBarAction(
+//              label: 'Cancel',
+//              onPressed: () {
+//                // Some code to undo the change.
+//              },
+//            ),
+//          );
+//          _scaffoldKey.currentState.showSnackBar(snackBar);
+//        } else {}
+//      }
     }
   }
 }

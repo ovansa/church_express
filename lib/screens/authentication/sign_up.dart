@@ -9,7 +9,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:progress_hud/progress_hud.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUp extends StatefulWidget {
@@ -136,7 +135,7 @@ class _SignUpState extends State<SignUp> {
                               labelText: 'Email',
                               labelStyle: welcomeTextField),
                           initialValue: "",
-                          onSaved: (val) => _email = val,
+                          onSaved: (val) => _email = val.trim(),
                           validator: (val) =>
                               val == "" ? "Email is required" : null,
                         ),
@@ -228,61 +227,94 @@ class _SignUpState extends State<SignUp> {
 
   _handleSubmit() async {
     final FormState formState = formKey.currentState;
-    su.show();
     if (formState.validate()) {
       formState.save();
-      try {
-        FirebaseUser user = (await firebaseAuth.createUserWithEmailAndPassword(
-                email: _email, password: _password))
-            .user;
+
+      firebaseAuth.createUserWithEmailAndPassword(email: _email, password: _password).then((result){
         UserUpdateInfo userUpdateInfo = UserUpdateInfo();
         userUpdateInfo.displayName = _name;
-        su.hide();
-        setLoggedInPreference(true).then((bool committed){
-          user.updateProfile(userUpdateInfo).then((onValue) async {
-            print("Signed Up and Logged in");
-            su.hide().whenComplete(() {
-              Navigator.pushReplacement(
-                  context,
-                  PageRouteBuilder(
-                      pageBuilder: (BuildContext context, _, __) => Welcome(),
-                      transitionsBuilder:
-                          (_, Animation<double> animation, __, Widget child) {
-                        return new FadeTransition(opacity: animation, child: child);
-                      }));
-            });
+        FirebaseUser user = result.user;
+
+        setEmailPreference(_email);
+        setLoggedInPreference(true).then((bool committed) {
+          user.updateProfile(userUpdateInfo).then((onValue) {
+            print("Signed up and logged in");
+            Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                    pageBuilder: (BuildContext context, _, __) => Welcome(),
+                    transitionsBuilder:
+                        (_, Animation<double> animation, __, Widget child) {
+                      return new FadeTransition(opacity: animation, child: child);
+                    }));
           });
         });
-      } catch (error) {
-        su.hide().whenComplete(() {
-          if (error.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
-            print('ERROR_EMAIL_ALREADY_IN_USE');
-            final snackBar = SnackBar(
-              content: Text('Oops! Email already in use.'),
-              action: SnackBarAction(
-                label: 'Cancel',
-                onPressed: () {
-                  // Some code to undo the change.
-                },
-              ),
-            );
-            scaffoldKey.currentState.showSnackBar(snackBar);
-          } else if (error.code == 'ERROR_WEAK_PASSWORD') {
-            print('ERROR_WEAK_PASSWORD');
-            final snackBar = SnackBar(
-              content: Text('Oops! Weak Password'),
-              action: SnackBarAction(
-                label: 'Cancel',
-                onPressed: () {
-                  // Some code to undo the change.
-                },
-              ),
-            );
-            scaffoldKey.currentState.showSnackBar(snackBar);
-          } else {}
-        });
-      }
-    }
-  }
 
+      }).catchError((error){
+        print(error.message);
+        final snackBar = SnackBar(
+          content: Text(error.message),
+          action: SnackBarAction(
+            label: 'Cancel',
+            onPressed: () {
+              // Some code to undo the change.
+            },
+          ),
+        );
+        scaffoldKey.currentState.showSnackBar(snackBar);
+      });
+    }
+//      try {
+//        FirebaseUser user = (await firebaseAuth.createUserWithEmailAndPassword(
+//                email: _email, password: _password))
+//            .user;
+//        UserUpdateInfo userUpdateInfo = UserUpdateInfo();
+//        userUpdateInfo.displayName = _name;
+//        su.hide();
+//        setLoggedInPreference(true).then((bool committed){
+//          user.updateProfile(userUpdateInfo).then((onValue) async {
+//            print("Signed Up and Logged in");
+//            su.hide().whenComplete(() {
+//              Navigator.pushReplacement(
+//                  context,
+//                  PageRouteBuilder(
+//                      pageBuilder: (BuildContext context, _, __) => Welcome(),
+//                      transitionsBuilder:
+//                          (_, Animation<double> animation, __, Widget child) {
+//                        return new FadeTransition(opacity: animation, child: child);
+//                      }));
+//            });
+//          });
+//        });
+//      } catch (error) {
+//        su.hide().whenComplete(() {
+//          if (error.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
+//            print('ERROR_EMAIL_ALREADY_IN_USE');
+//            final snackBar = SnackBar(
+//              content: Text('Oops! Email already in use.'),
+//              action: SnackBarAction(
+//                label: 'Cancel',
+//                onPressed: () {
+//                  // Some code to undo the change.
+//                },
+//              ),
+//            );
+//            scaffoldKey.currentState.showSnackBar(snackBar);
+//          } else if (error.code == 'ERROR_WEAK_PASSWORD') {
+//            print('ERROR_WEAK_PASSWORD');
+//            final snackBar = SnackBar(
+//              content: Text('Oops! Weak Password'),
+//              action: SnackBarAction(
+//                label: 'Cancel',
+//                onPressed: () {
+//                  // Some code to undo the change.
+//                },
+//              ),
+//            );
+//            scaffoldKey.currentState.showSnackBar(snackBar);
+//          } else {}
+//        });
+//      }
+//    }
+  }
 }

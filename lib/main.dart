@@ -1,7 +1,6 @@
 import 'package:church_express/screens/add_event.dart';
 import 'package:church_express/screens/authentication/login.dart';
 import 'package:church_express/screens/authentication/sign_up.dart';
-import 'package:church_express/screens/authentication/some.dart';
 import 'package:church_express/screens/bible/books_page.dart';
 import 'package:church_express/screens/give.dart';
 import 'package:church_express/screens/live_stream.dart';
@@ -27,7 +26,7 @@ class MyApp extends StatelessWidget {
       MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Church Express',
-        home: BookPage(),
+        home: SplashScreen(),
       ),
     );
   }

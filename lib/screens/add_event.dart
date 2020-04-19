@@ -116,7 +116,9 @@ class _AddEventState extends State<AddEvent> {
                             lastDate: DateTime(2100)).then((date) {
                           setState(() {
                             _dateTime = date;
-                            _date = DateFormat.yMMMd().format(date);
+//                            _date = DateFormat('dd/MM/yyyy').format(date);
+                            _date = date.toUtc().toString();
+//                            _date = DateFormat.yMMMd().format(date);
                             event.date = _date;
                           });
                         });
