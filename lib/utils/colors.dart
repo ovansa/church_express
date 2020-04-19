@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Color appBarColor = Color(0xFF19054E);
+Color appBarColor = Color(0xFF262F3A);
 Color bottomNavBarColor = Color(0xFF262F3A);
 
 Color activeTabColor = Color(0xFFFFDA1A);

@@ -31,3 +31,5 @@ TextStyle splashDescrStyle = GoogleFonts.montserrat(fontSize: 14.0, color: Color
 TextStyle bibleTitleStyle = GoogleFonts.montserrat(fontSize: 13.0, color: Color(0xFF262F3A), fontWeight: FontWeight.w500);
 TextStyle bibleChapterStyle = GoogleFonts.montserrat(fontSize: 18.0, color: Color(0xFF262F3A), fontWeight: FontWeight.w500);
 TextStyle bibleContentStyle = GoogleFonts.montserrat(fontSize: 12.0, color: Color(0xFF262F3A), fontWeight: FontWeight.w400);
+
+TextStyle donateTtitleStyle = GoogleFonts.montserrat(fontSize: 14.0, color: Color(0xFFFFFFFF), fontWeight: FontWeight.w500);
