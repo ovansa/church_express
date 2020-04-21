@@ -38,7 +38,7 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
           createDrawerItem(
-              icon: FontAwesomeIcons.userTie,
+              icon: FontAwesomeIcons.home,
               text: Text(
                 "Home",
                 style: drawerItemsStyle,

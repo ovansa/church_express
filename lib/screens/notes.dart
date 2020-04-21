@@ -30,15 +30,15 @@ class _NotesState extends State<Notes> {
             onPressed: () {
               _globalKey.currentState.openDrawer();
             }),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              FontAwesomeIcons.search,
-              color: Color(0xFFFFFFFF),
-              size: 14.0,
-            ),
-          )
-        ],
+//        actions: <Widget>[
+//          IconButton(
+//            icon: Icon(
+//              FontAwesomeIcons.search,
+//              color: Color(0xFFFFFFFF),
+//              size: 14.0,
+//            ),
+//          )
+//        ],
       ),
       drawer: AppDrawer(),
       body: FutureBuilder(

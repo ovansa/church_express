@@ -197,71 +197,77 @@ class _GiveState extends State<Give> {
               ),
             ),
 
-            isTitheVisible ? Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35.0),
-              child: Form(
-                  key: _formKey,
-                  child: Flex(
-                    direction: Axis.vertical,
-                    children: <Widget>[
-                      ListTile(
-                        title: TextFormField(
-                          style: welcomeTextField,
-                          decoration: InputDecoration(
-                              hintText: "Enter Amount",
-                              hintStyle: welcomeTextField,
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(15.0)),
-                                borderSide: BorderSide(
-                                  color: Colors.black.withOpacity(0.6),
+            Visibility(
+              maintainSize: true,
+              maintainAnimation: true,
+              maintainState: true,
+              visible: isTitheVisible,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 35.0),
+                child: Form(
+                    key: _formKey,
+                    child: Flex(
+                      direction: Axis.vertical,
+                      children: <Widget>[
+                        ListTile(
+                          title: TextFormField(
+                            style: welcomeTextField,
+                            decoration: InputDecoration(
+                                hintText: "Enter Amount",
+                                hintStyle: welcomeTextField,
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(15.0)),
+                                  borderSide: BorderSide(
+                                    color: Colors.black.withOpacity(0.6),
+                                  ),
                                 ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(15.0)),
-                                borderSide: BorderSide(
-                                    color: Colors.black.withOpacity(0.8),
-                                    width: 1.5),
-                              ),
-                              labelText: 'Enter Amount',
-                              labelStyle: welcomeTextField),
-                          initialValue: "",
-                          onSaved: (val) => _amountToDonate = int.tryParse(val) * 100,
-                          validator: (val) =>
-                          val == "" ? "Enter Amount" : null,
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(15.0)),
+                                  borderSide: BorderSide(
+                                      color: Colors.black.withOpacity(0.8),
+                                      width: 1.5),
+                                ),
+                                labelText: 'Enter Amount',
+                                labelStyle: welcomeTextField),
+                            initialValue: "",
+                            onSaved: (val) => _amountToDonate = int.tryParse(val) * 100,
+                            validator: (val) =>
+                            val == "" ? "Enter Amount" : null,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 20.0,),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: FlatButton(
-                                onPressed: () {
-                                  _handleCheckout(context);
-                                },
-                                padding: EdgeInsets.symmetric(vertical: 13.0),
-                                color: floatButtonColor,
-                                child: Text(
-                                  "Donate",
-                                  style: welcomeSubmitButton,
+                        SizedBox(height: 20.0,),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: FlatButton(
+                                  onPressed: () {
+                                    _handleCheckout(context);
+                                  },
+                                  padding: EdgeInsets.symmetric(vertical: 13.0),
+                                  color: floatButtonColor,
+                                  child: Text(
+                                    "Donate",
+                                    style: welcomeSubmitButton,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: new BorderRadius.circular(18.0),
+                                  ),
                                 ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(18.0),
-                                ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 15.0,
-                      ),
-                    ],
-                  )),
-            ) : SizedBox.shrink(),
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                      ],
+                    )),
+              ),
+            ) ,
 
 //            Padding(
 //              padding: const EdgeInsets.symmetric(horizontal: 20.0),

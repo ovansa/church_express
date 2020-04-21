@@ -89,7 +89,7 @@ class _EventItem2State extends State<EventItem2> {
           return Column(
             children: <Widget>[
               Container(
-                height: 220,
+                height: 230,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.0),
                     color: Colors.grey.withOpacity(0.2)),
@@ -107,7 +107,7 @@ class _EventItem2State extends State<EventItem2> {
                                 bottomRight: Radius.circular(20.0))),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 10.0),
+                              horizontal: 10.0, vertical: 5.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[

@@ -8,8 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:progress_dialog/progress_dialog.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -29,9 +27,7 @@ class _SignUpState extends State<SignUp> {
   String _password;
   String _name;
 
-  bool _loading = false;
-
-  ProgressDialog su;
+  int _state = 0;
 
 
   @override
@@ -41,14 +37,6 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    su = ProgressDialog(context,
-        showLogs: true, isDismissible: false);
-    su.style(
-      message: "Creating account ...",
-      elevation: 10.0,
-      messageTextStyle: videoTitleStyle,
-      insetAnimCurve: Curves.easeInOut,
-    );
 
     return Scaffold(
       key: scaffoldKey,
@@ -179,15 +167,10 @@ class _SignUpState extends State<SignUp> {
                           children: <Widget>[
                             Expanded(
                               child: FlatButton(
-                                onPressed: () {
-                                  _handleSubmit();
-                                },
+                                onPressed: _loading ? null : _startHandlingButton,
                                 padding: EdgeInsets.symmetric(vertical: 17.0),
                                 color: floatButtonColor,
-                                child: Text(
-                                  "Submit",
-                                  style: welcomeSubmitButton,
-                                ),
+                                child: setupButtonChild(),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: new BorderRadius.circular(18.0),
                                 ),
@@ -225,20 +208,61 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
+  bool _loading = false;
+
+  setLoading(bool state) {
+    setState(() {
+      _loading = state;
+    });
+  }
+
+  _startHandlingButton() async {
+    try {
+      setLoading(true);
+      print("button disabled");
+      await _handleSubmit();
+    } finally {
+      setLoading(false);
+      print("button enabled");
+    }
+  }
+
+  setupButtonChild() {
+    if (_state == 0) {
+      return Text("Submit", style: welcomeSubmitButton,);
+    } else if (_state == 1){
+      return SizedBox(
+        height: 20.0,
+        width: 20.0,
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        ),
+      );
+    } else {
+      return Icon(Icons.check, color: Colors.white);
+    }
+  }
+
   _handleSubmit() async {
     final FormState formState = formKey.currentState;
     if (formState.validate()) {
+      setState(() {
+        _state = 1;
+      });
       formState.save();
-
       firebaseAuth.createUserWithEmailAndPassword(email: _email, password: _password).then((result){
         UserUpdateInfo userUpdateInfo = UserUpdateInfo();
         userUpdateInfo.displayName = _name;
         FirebaseUser user = result.user;
 
         setEmailPreference(_email);
+        setState(() {
+          _state = 2;
+        });
         setLoggedInPreference(true).then((bool committed) {
           user.updateProfile(userUpdateInfo).then((onValue) {
             print("Signed up and logged in");
+            Navigator.pop(context);
             Navigator.pushReplacement(
                 context,
                 PageRouteBuilder(
@@ -251,6 +275,9 @@ class _SignUpState extends State<SignUp> {
         });
 
       }).catchError((error){
+        setState(() {
+          _state = 0;
+        });
         print(error.message);
         final snackBar = SnackBar(
           content: Text(error.message),

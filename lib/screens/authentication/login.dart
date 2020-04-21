@@ -25,11 +25,17 @@ class _LoginState extends State<Login> {
   String _email;
   String _password;
 
-  bool _isLoading = false;
+  bool _isLoading;
+
+  int _state = 0;
 
   @override
   void initState() {
     super.initState();
+
+    setState(() {
+      _state = 0;
+    });
   }
 
   @override
@@ -131,17 +137,12 @@ class _LoginState extends State<Login> {
                         child: Row(
                           children: <Widget>[
                             Expanded(
-                              child: FlatButton(
-                                      onPressed: () {
-                                        _handleSubmit();
-                                      },
+                              child: MaterialButton(
+                                      onPressed: _loading ? null : _startHandlingButton,
                                       padding:
                                           EdgeInsets.symmetric(vertical: 17.0),
                                       color: floatButtonColor,
-                                      child: Text(
-                                        "Submit",
-                                        style: welcomeSubmitButton,
-                                      ),
+                                      child: setupButtonChild(),
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
                                             new BorderRadius.circular(18.0),
@@ -178,7 +179,7 @@ class _LoginState extends State<Login> {
                                   }));
                         },
                         child: Text("New? Register"),
-                      )
+                      ),
                     ],
                   )),
             ],
@@ -188,17 +189,68 @@ class _LoginState extends State<Login> {
     );
   }
 
+  bool _loading = false;
+
+  setLoading(bool state) {
+    setState(() {
+      _loading = state;
+    });
+  }
+
+  _startHandlingButton() async {
+    try {
+      setLoading(true);
+      print("button disabled");
+      await _handleSubmit();
+    } finally {
+      setLoading(false);
+      print("button enabled");
+    }
+  }
+
+  setupButtonChild() {
+    if (_state == 0) {
+      return Text("Submit", style: welcomeSubmitButton,);
+    } else if (_state == 1){
+      return SizedBox(
+        height: 20.0,
+        width: 20.0,
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        ),
+      );
+    } else {
+      return Icon(Icons.check, color: Colors.white);
+    }
+  }
+
+  Widget _showCircularProgress() {
+    if (_isLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
+    return Container(
+      height: 0.0,
+      width: 0.0,
+    );
+  }
+
   _handleSubmit() async {
     final FormState formState = formKey.currentState;
 
     if (formState.validate()) {
+      setState(() {
+        _state = 1;
+      });
       formState.save();
       print("Valid");
-      CircularProgressIndicator();
       firebaseAuth.signInWithEmailAndPassword(email: _email, password: _password).then((result){
         print("It worked!");
         setEmailPreference(_email);
+        setState(() {
+          _state = 2;
+        });
         setLoggedInPreference(true).then((bool committed) {
+          Navigator.pop(context);
           Navigator.pushReplacement(
               context,
               PageRouteBuilder(
@@ -209,6 +261,9 @@ class _LoginState extends State<Login> {
                   }));
         });
       }).catchError((error){
+        setState(() {
+          _state = 0;
+        });
         print(error.message);
         final snackBar = SnackBar(
             content: Text(error.message),
