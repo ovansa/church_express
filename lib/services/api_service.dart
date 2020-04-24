@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:church_express/models/LiveVideo.dart';
 import 'package:church_express/models/video_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:church_express/models/channel_model.dart';
@@ -45,6 +46,44 @@ class APIService {
     }
   }
 
+  Future<List<LiveVideo>> fetchLiveVideos({String channelId}) async {
+    Map<String, String> parameters = {
+      'key': 'AIzaSyCFWKRQli9kGclT16QmfdTajZnSdEgoys8',
+      'id': 'UCeY0bbntWzzVIaj2z3QigXg',
+      'part': 'snippet, id',
+      'eventType': 'live',
+      'type': 'video'
+    };
+
+    Uri uri = Uri.https(
+      _baseUrl,
+      '/youtube/v3/search',
+      parameters,
+    );
+
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+    };
+
+    var response = await http.get(uri, headers: headers);
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+
+      List<dynamic> videoJson = data['items'];
+      print(videoJson.toString());
+
+      List<LiveVideo> videos = [];
+      videoJson.forEach(
+              (json) => videos.add(
+                  LiveVideo.fromMap(json)));
+      print(videos);
+      return videos;
+    } else {
+      throw json.decode(response.body)['error']['message'];
+    }
+  }
+
   Future<List<Video>> fetchVideosFromPlaylist({String playlistId}) async {
     Map<String, String> parameters = {
       'part': 'snippet',
@@ -61,6 +100,9 @@ class APIService {
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: 'application/json',
     };
+    
+    Uri ri = Uri.https("www.googleapis.com",
+        "youtube/v3/search?key=AIzaSyCFWKRQli9kGclT16QmfdTajZnSdEgoys8&channelId=UCeY0bbntWzzVIaj2z3QigXg&part=snippet,id&eventType=live&type=video");
 
     // Get Playlist Videos
     var response = await http.get(uri, headers: headers);
@@ -73,7 +115,7 @@ class APIService {
       // Fetch first eight videos from uploads playlist
       List<Video> videos = [];
       videosJson.forEach(
-            (json) => videos.add(
+        (json) => videos.add(
           Video.fromMap(json['snippet']),
         ),
       );
@@ -82,5 +124,4 @@ class APIService {
       throw json.decode(response.body)['error']['message'];
     }
   }
-
 }

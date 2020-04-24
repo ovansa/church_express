@@ -9,19 +9,19 @@ class Bible extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _globalKey,
-      appBar: AppBar(
-          title: Text("Bible", style: appBarTextStyle,),
-          backgroundColor: appBarColor,
-          leading: IconButton(icon: Image.asset("assets/icons/drawer_icon.png"), onPressed: () {
-            _globalKey.currentState.openDrawer();
-          })
-      ),
-      drawer: AppDrawer(),
-      body: Container(
-        
-      ),
-    );
+        key: _globalKey,
+        appBar: AppBar(
+            title: Text(
+              "Bible",
+              style: appBarTextStyle,
+            ),
+            backgroundColor: appBarColor,
+            leading: IconButton(
+                icon: Image.asset("assets/icons/drawer_icon.png"),
+                onPressed: () {
+                  _globalKey.currentState.openDrawer();
+                })),
+        drawer: AppDrawer(),
+        body: null);
   }
-
 }

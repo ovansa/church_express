@@ -5,6 +5,7 @@ import 'package:church_express/screens/give.dart';
 import 'package:church_express/screens/home.dart';
 import 'package:church_express/screens/giving.dart';
 import 'package:church_express/screens/live_stream.dart';
+import 'package:church_express/screens/live_stream2.dart';
 import 'package:church_express/screens/notes.dart';
 import 'package:church_express/screens/splash_screen/splash_screen.dart';
 import 'package:church_express/screens/welcome.dart';
@@ -103,7 +104,7 @@ class AppDrawer extends StatelessWidget {
                 Navigator.push(
                     context,
                     PageRouteBuilder(
-                        pageBuilder: (BuildContext context, _, __) => LiveStream(),
+                        pageBuilder: (BuildContext context, _, __) => LiveStream2(),
                         transitionsBuilder:
                             (_, Animation<double> animation, __, Widget child) {
                           return new FadeTransition(

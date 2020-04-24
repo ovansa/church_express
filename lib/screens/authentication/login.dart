@@ -137,7 +137,7 @@ class _LoginState extends State<Login> {
                         child: Row(
                           children: <Widget>[
                             Expanded(
-                              child: MaterialButton(
+                              child: FlatButton(
                                       onPressed: _loading ? null : _startHandlingButton,
                                       padding:
                                           EdgeInsets.symmetric(vertical: 17.0),
