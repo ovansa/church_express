@@ -1,4 +1,4 @@
-import 'package:add_2_calendar/add_2_calendar.dart';
+//import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:church_express/models/events.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
@@ -27,14 +27,14 @@ class _EventItemState extends State<EventItem> {
         scrollDirection: Axis.vertical,
         physics: BouncingScrollPhysics(),
         itemBuilder: (BuildContext context, int index){
-          Event addEvent = Event(
-            title: events[index].title,
-            description: events[index].title,
-            location: "Lagos Island",
-            startDate: DateTime.now(),
-            endDate: DateTime.now().add(Duration(days: 1)),
-            allDay: false,
-          );
+//          Event addEvent = Event(
+//            title: events[index].title,
+//            description: events[index].title,
+//            location: "Lagos Island",
+//            startDate: DateTime.now(),
+//            endDate: DateTime.now().add(Duration(days: 1)),
+//            allDay: false,
+//          );
       return Column(
         children: <Widget>[
           Container(
@@ -85,10 +85,10 @@ class _EventItemState extends State<EventItem> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                    Add2Calendar.addEvent2Cal(addEvent).then((success) {
-                                      scaffoldState.currentState.showSnackBar(
-                                          SnackBar(content: Text(success ? 'Success' : 'Error')));
-                                    });
+//                                    Add2Calendar.addEvent2Cal(addEvent).then((success) {
+//                                      scaffoldState.currentState.showSnackBar(
+//                                          SnackBar(content: Text(success ? 'Success' : 'Error')));
+//                                    });
                                 },
                                 child: Container(
                                   height: 20.0,

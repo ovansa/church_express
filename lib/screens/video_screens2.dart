@@ -33,12 +33,25 @@ class _VideoScreenState extends State<VideoScreen> {
   }
 
   @override
+  void deactivate() {
+    // Pauses video while navigating to next page.
+    _controller.pause();
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _globalKey,
       appBar: AppBar(
           title: Text(
-            "Welcome",
+            "Video",
             style: appBarTextStyle,
           ),
           backgroundColor: appBarColor,

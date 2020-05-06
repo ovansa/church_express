@@ -54,58 +54,60 @@ class _BookPageState extends State<BookPage> {
                   _globalKey.currentState.openDrawer();
                 })),
         drawer: AppDrawer(),
-        body: Padding(
-          padding:
-          const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          child: FutureBuilder<Books>(
-              future: theBooks,
-              builder: (BuildContext context, AsyncSnapshot<Books> snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                      itemCount: snapshot.data.data.length,
-                      itemBuilder: (context, index) {
-                        Data singleBook = snapshot.data.data[index];
-                        return GestureDetector(
-                          onTap: () {
-                            print(singleBook.name);
-                            print(singleBook.id);
-                            Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                    pageBuilder: (BuildContext context, _, __) => ChapterListPage(bookId: singleBook.id, bookName: singleBook.name,),
-                                    transitionsBuilder:
-                                        (_, Animation<double> animation, __, Widget child) {
-                                      return new FadeTransition(
-                                          opacity: animation, child: child);
-                                    }));
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  border: Border.all(
-                                      width: 1.0,
-                                      color: Colors.black.withOpacity(0.3))),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 15.0),
-                                child: Row(
-                                  children: <Widget>[Text(singleBook.name, style: bibleTitleStyle,)],
+        body: Container(
+          child: Padding(
+            padding:
+            const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+            child: FutureBuilder<Books>(
+                future: theBooks,
+                builder: (BuildContext context, AsyncSnapshot<Books> snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                        itemCount: snapshot.data.data.length,
+                        itemBuilder: (context, index) {
+                          Data singleBook = snapshot.data.data[index];
+                          return GestureDetector(
+                            onTap: () {
+                              print(singleBook.name);
+                              print(singleBook.id);
+                              Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                      pageBuilder: (BuildContext context, _, __) => ChapterListPage(bookId: singleBook.id, bookName: singleBook.name,),
+                                      transitionsBuilder:
+                                          (_, Animation<double> animation, __, Widget child) {
+                                        return new FadeTransition(
+                                            opacity: animation, child: child);
+                                      }));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 50.0,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    border: Border.all(
+                                        width: 1.0,
+                                        color: Colors.black.withOpacity(0.3))),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                                  child: Row(
+                                    children: <Widget>[Text(singleBook.name, style: bibleTitleStyle,)],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      });
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(appBarColor),),
-                  );
-                }
-              }),
+                          );
+                        });
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(appBarColor),),
+                    );
+                  }
+                }),
+          ),
         ));
   }
 

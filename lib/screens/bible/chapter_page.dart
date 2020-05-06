@@ -2,6 +2,7 @@ import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 import 'chapter.dart';
 import 'package:http/http.dart' as http;
@@ -22,7 +23,7 @@ class ChapterPage extends StatefulWidget {
 class _ChapterPageState extends State<ChapterPage> {
   Future<Chapter> fetchChapter() async {
     http.Response response = await http.get(
-        'https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/chapters/${widget.id}',
+        'https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/chapters/${widget.id}?content-type=text',
         headers: {'api-key': 'dad5f80c56fea90e6a36e481cf1c4ddd'});
 
     if (response.statusCode == 200) {
@@ -63,28 +64,23 @@ class _ChapterPageState extends State<ChapterPage> {
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Text(widget.reference, style: bibleChapterStyle,),
             ),
+            SizedBox(height: 10.0,),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: FutureBuilder(
                   future: theChapter,
                   builder: (BuildContext context, AsyncSnapshot<Chapter> snapshot) {
                     if(snapshot.hasData) {
-                      return Html(data: snapshot.data.data.content,
-                        useRichText: true,
-                        defaultTextStyle: bibleContentStyle,
-                        renderNewlines: true,
-                        customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                          if (node is dom.Element) {
-                            switch (node.localName) {
-                              case "p":
-                                return baseStyle.merge(TextStyle(height: 2, fontSize: 12));
-                              case "v":
-                                return baseStyle.merge(TextStyle(height: 10, fontSize: 12, ));
-                            }
-                          }
-                          return baseStyle;
-                        },
+                      String newData = snapshot.data.data.content.replaceAll("span", "p");
+                      print(newData);
+                      return Text(
+                        newData, style: bibleContentStyle,
                       );
+//                      return Html(data: snapshot.data.data.content,
+//                        useRichText: true,
+//                        defaultTextStyle: bibleContentStyle,
+//                        renderNewlines: true,
+//                      );
                     } else {
                       return Center(
                         child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(appBarColor),),

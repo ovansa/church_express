@@ -12,6 +12,7 @@ import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class LiveStream2 extends StatefulWidget {
   @override
@@ -25,6 +26,8 @@ class _LiveStream2State extends State<LiveStream2> {
 
   Future<LiveVids> theVideos;
 
+  int _noOfVids;
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +37,8 @@ class _LiveStream2State extends State<LiveStream2> {
 
     theVideos = fetchTheVids();
     theVideos.then((val){
+      _noOfVids = val.items.length;
+      print(_noOfVids);
       print(val.items[0].id.videoId);
       print(val.items[0].snippet.channelTitle);
     });
@@ -57,6 +62,7 @@ class _LiveStream2State extends State<LiveStream2> {
 
     setState(() {
       _liveVideos = videos;
+      _noOfVids = videos.length;
     });
   }
 
@@ -131,16 +137,16 @@ class _LiveStream2State extends State<LiveStream2> {
         ),
       ),
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
         padding: EdgeInsets.all(10.0),
-        height: 70.0,
+        height: 90.0,
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
             BoxShadow(
               color: Colors.black12,
-              offset: Offset(0, 1),
-              blurRadius: 6.0,
+              offset: Offset(0, 0),
+              blurRadius: 1.0,
             ),
           ],
         ),
@@ -149,21 +155,40 @@ class _LiveStream2State extends State<LiveStream2> {
             ClipRRect(
                 borderRadius: BorderRadius.circular(10.0),
               child: Image(
-                width: 50.0,
+                width: 70.0,
+                height: 55.0,
                 image: NetworkImage(video.thumbnailUrl),
               ),
             ),
             SizedBox(width: 10.0),
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(height: 3.0,),
+                    Text(
                       video.title,
-                      style: videoTitleStyle
-                  ),
-                ],
+                      style: videoTitleStyle,
+                      overflow: TextOverflow.clip,
+                      maxLines: 1,
+                    ),
+                    SizedBox(height: 3,),
+                    Text(
+                      video.description,
+                      style: videoDescriptionStyle,
+                      overflow: TextOverflow.clip,
+                      maxLines: 1,
+                    ),
+                    SizedBox(height: 3,),
+                    Text(
+                      video.publishedAt.split("T")[0],
+                      style: videoDateStyle,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -181,40 +206,57 @@ class _LiveStream2State extends State<LiveStream2> {
       ),
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-        padding: EdgeInsets.all(10.0),
-        height: 70.0,
+        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+        height: 100.0,
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
             BoxShadow(
               color: Colors.black12,
-              offset: Offset(0, 1),
-              blurRadius: 6.0,
+              offset: Offset(0, 0),
+              blurRadius: 1.0,
             ),
           ],
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Image(
-                width: 50.0,
+                width: 70.0,
+                height: 55.0,
                 image: NetworkImage(items.snippet.thumbnails.defaults.url),
               ),
             ),
             SizedBox(width: 10.0),
             Expanded(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  SizedBox(height: 3.0,),
                   Text(
                       items.snippet.title,
-                      style: videoTitleStyle
+                      style: videoTitleStyle,
+                    overflow: TextOverflow.clip,
+                    maxLines: 1,
+                  ),
+                  SizedBox(height: 3,),
+                  Text(
+                      items.snippet.description,
+                      style: videoDescriptionStyle,
+                    overflow: TextOverflow.clip,
+                    maxLines: 1,
+                  ),
+                  SizedBox(height: 3,),
+                  Text(
+                    items.snippet.publishedAt.split("T")[0],
+                    style: videoDateStyle,
                   ),
                 ],
               ),
             ),
+            CircleAvatar(backgroundColor: Colors.red, radius: 4.0,),
           ],
         ),
       ),
@@ -271,25 +313,49 @@ class _LiveStream2State extends State<LiveStream2> {
                     ),
                     fit: BoxFit.fill,
                   ))),
-          FlatButton(
-              onPressed: () {
-                  fetchLiveVideos();
-              },
-              child: Text("Fetch")),
-          Expanded(
-            child: FutureBuilder(
+          _noOfVids == 0 ? SizedBox.shrink() :
+          FutureBuilder(
               future: theVideos,
-                builder: (BuildContext context, AsyncSnapshot<LiveVids> snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<LiveVids> snapshot) {
                 if(snapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: snapshot.data.items.length,
-                      itemBuilder: (context, index) {
-                      Items item = snapshot.data.items[index];
-                      return _buildLiveVideo(item);
-                  });
+                  return Expanded(
+                    flex: 1,
+                    child: Container(
+                      height: 70.0,
+                      child: ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          itemCount: snapshot.data.items.length,
+                          itemBuilder: (context, index) {
+                            Items item = snapshot.data.items[index];
+                            return _buildLiveVideo(item);
+                          }),
+                    ),
+                  );
+                } else {
+                  return Container(height: 0.0, width: 0.0,);
                 }
-                }),
-          ),
+              }),
+//          Expanded(
+//            flex: 1,
+//            child: Container(
+//              height: 70,
+//              child: FutureBuilder(
+//                  future: theVideos,
+//                  builder: (BuildContext context, AsyncSnapshot<LiveVids> snapshot) {
+//                    if(snapshot.hasData) {
+//                      return ListView.builder(
+//                          physics: BouncingScrollPhysics(),
+//                          itemCount: snapshot.data.items.length,
+//                          itemBuilder: (context, index) {
+//                            Items item = snapshot.data.items[index];
+//                            return _buildLiveVideo(item);
+//                          });
+//                    } else {
+//                      return SizedBox.shrink();
+//                    }
+//                  }),
+//            ),
+//          ),
           _channel != null ? NotificationListener<ScrollNotification>(
               onNotification: (ScrollNotification scrollDetails) {
                 if (!_isLoading &&
@@ -301,6 +367,7 @@ class _LiveStream2State extends State<LiveStream2> {
                 }
                 return false;
               }, child: Expanded(
+            flex: 6,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: ListView.builder(
@@ -316,10 +383,13 @@ class _LiveStream2State extends State<LiveStream2> {
               ),
             ),
           )
-          ) : Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(
-                appBarColor, // Red
+          ) : Expanded(
+            flex: 8,
+            child: Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  appBarColor, // Red
+                ),
               ),
             ),
           )

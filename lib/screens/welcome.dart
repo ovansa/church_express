@@ -31,7 +31,7 @@ class _WelcomeState extends State<Welcome> {
       key: _globalKey,
       appBar: AppBar(
           title: Text(
-            "Welcome",
+            "Home",
             style: appBarTextStyle,
           ),
           backgroundColor: appBarColor,

@@ -20,13 +20,12 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
+      child: Column(
         children: <Widget>[
           Container(
             margin: const EdgeInsets.only(bottom: 10.0),
-            height: 80.0,
-            decoration: BoxDecoration(color: appBarColor.withOpacity(0.1)),
+            height: 85.0,
+            decoration: BoxDecoration(color: appBarColor.withOpacity(0.9)),
             child: Padding(
               padding: const EdgeInsets.only(left: 20.0, top: 20.0),
               child: Align(
@@ -38,134 +37,167 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
           ),
-          createDrawerItem(
-              icon: FontAwesomeIcons.home,
-              text: Text(
-                "Home",
-                style: drawerItemsStyle,
-              ),
-              onTap: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                        pageBuilder: (BuildContext context, _, __) => Welcome(),
-                        transitionsBuilder:
-                            (_, Animation<double> animation, __, Widget child) {
-                          return new FadeTransition(
-                              opacity: animation, child: child);
-                        }));
-              }),
-          createDrawerItem(
-              icon: FontAwesomeIcons.bible,
-              text: Text(
-                "Bible",
-                style: drawerItemsStyle,
-              ),
-              onTap: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                        pageBuilder: (BuildContext context, _, __) => BookPage(),
-                        transitionsBuilder:
-                            (_, Animation<double> animation, __, Widget child) {
-                          return new FadeTransition(
-                              opacity: animation, child: child);
-                        }));
-              }),
+          Expanded(child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  createDrawerItem(
+                      icon: FontAwesomeIcons.home,
+                      text: Text(
+                        "Home",
+                        style: drawerItemsStyle,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                                pageBuilder: (BuildContext context, _, __) => Welcome(),
+                                transitionsBuilder:
+                                    (_, Animation<double> animation, __, Widget child) {
+                                  return new FadeTransition(
+                                      opacity: animation, child: child);
+                                }));
+                      }),
+                  createDrawerItem(
+                      icon: FontAwesomeIcons.bible,
+                      text: Text(
+                        "Bible",
+                        style: drawerItemsStyle,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                                pageBuilder: (BuildContext context, _, __) => BookPage(),
+                                transitionsBuilder:
+                                    (_, Animation<double> animation, __, Widget child) {
+                                  return new FadeTransition(
+                                      opacity: animation, child: child);
+                                }));
+                      }),
 
-          createDrawerItem(
-              icon: FontAwesomeIcons.donate,
-              text: Text(
-                "Giving",
-                style: drawerItemsStyle,
+                  createDrawerItem(
+                      icon: FontAwesomeIcons.donate,
+                      text: Text(
+                        "Giving",
+                        style: drawerItemsStyle,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                                pageBuilder: (BuildContext context, _, __) => Give(),
+                                transitionsBuilder:
+                                    (_, Animation<double> animation, __, Widget child) {
+                                  return new FadeTransition(
+                                      opacity: animation, child: child);
+                                }));
+                      }),
+                  createDrawerItem(
+                      icon: FontAwesomeIcons.youtube,
+                      text: Text(
+                        "Live Stream",
+                        style: drawerItemsStyle,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                                pageBuilder: (BuildContext context, _, __) => LiveStream2(),
+                                transitionsBuilder:
+                                    (_, Animation<double> animation, __, Widget child) {
+                                  return new FadeTransition(
+                                      opacity: animation, child: child);
+                                }));
+                      }),
+                  createDrawerItem(
+                      icon: FontAwesomeIcons.stickyNote,
+                      text: Text(
+                        "Notes",
+                        style: drawerItemsStyle,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                                pageBuilder: (BuildContext context, _, __) => Notes(),
+                                transitionsBuilder:
+                                    (_, Animation<double> animation, __, Widget child) {
+                                  return new FadeTransition(
+                                      opacity: animation, child: child);
+                                }));
+                      }),
+//          createDrawerItem(
+//              icon: FontAwesomeIcons.stickyNote,
+//              text: Text(
+//                "Add Event",
+//                style: drawerItemsStyle,
+//              ),
+//              onTap: () {
+//                Navigator.of(context).pop();
+//                Navigator.push(
+//                    context,
+//                    PageRouteBuilder(
+//                        pageBuilder: (BuildContext context, _, __) => AddEvent(),
+//                        transitionsBuilder:
+//                            (_, Animation<double> animation, __, Widget child) {
+//                          return new FadeTransition(
+//                              opacity: animation, child: child);
+//                        }));
+//              }),
+
+                ],
               ),
-              onTap: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                        pageBuilder: (BuildContext context, _, __) => Give(),
-                        transitionsBuilder:
-                            (_, Animation<double> animation, __, Widget child) {
-                          return new FadeTransition(
-                              opacity: animation, child: child);
-                        }));
-              }),
-          createDrawerItem(
-              icon: FontAwesomeIcons.youtube,
-              text: Text(
-                "Live Stream",
-                style: drawerItemsStyle,
-              ),
-              onTap: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                        pageBuilder: (BuildContext context, _, __) => LiveStream2(),
-                        transitionsBuilder:
-                            (_, Animation<double> animation, __, Widget child) {
-                          return new FadeTransition(
-                              opacity: animation, child: child);
-                        }));
-              }),
-          createDrawerItem(
-              icon: FontAwesomeIcons.stickyNote,
-              text: Text(
-                "Notes",
-                style: drawerItemsStyle,
-              ),
-              onTap: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                        pageBuilder: (BuildContext context, _, __) => Notes(),
-                        transitionsBuilder:
-                            (_, Animation<double> animation, __, Widget child) {
-                          return new FadeTransition(
-                              opacity: animation, child: child);
-                        }));
-              }),
-          createDrawerItem(
-              icon: FontAwesomeIcons.stickyNote,
-              text: Text(
-                "Add Event",
-                style: drawerItemsStyle,
-              ),
-              onTap: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                        pageBuilder: (BuildContext context, _, __) => AddEvent(),
-                        transitionsBuilder:
-                            (_, Animation<double> animation, __, Widget child) {
-                          return new FadeTransition(
-                              opacity: animation, child: child);
-                        }));
-              }),
-          ListTile(
-            title: Text('Log Out', style: drawerItemsStyle,),
-            onTap: () {
-              FirebaseAuth.instance.signOut();
-              print("Signed Out");
-              setLoggedInPreference(false).then((val){
-                Navigator.of(context).pop();
-                Navigator.pushReplacement(
-                    context,
-                    PageRouteBuilder(
-                        pageBuilder: (BuildContext context, _, __) => SplashScreen(),
-                        transitionsBuilder:
-                            (_, Animation<double> animation, __, Widget child) {
-                          return new FadeTransition(
-                              opacity: animation, child: child);
-                        }));
-              });
-            },
-          ),
+              SizedBox(height: 20.0,),
+              createSignOutDrawerItem(
+                  icon: FontAwesomeIcons.signOutAlt,
+                  text: Text(
+                    "Sign Out",
+                    style: drawerSignOutItemsStyle,
+                  ),
+                  onTap: () {
+                    FirebaseAuth.instance.signOut();
+                    print("Signed Out");
+                    setLoggedInPreference(false).then((val){
+                      Navigator.of(context).pop();
+                      Navigator.pushReplacement(
+                          context,
+                          PageRouteBuilder(
+                              pageBuilder: (BuildContext context, _, __) => SplashScreen(),
+                              transitionsBuilder:
+                                  (_, Animation<double> animation, __, Widget child) {
+                                return new FadeTransition(
+                                    opacity: animation, child: child);
+                              }));
+                    });
+                  }),
+//              ListTile(
+//                title: Text('Log Out', style: drawerItemsStyle,),
+//                onTap: () {
+//                  FirebaseAuth.instance.signOut();
+//                  print("Signed Out");
+//                  setLoggedInPreference(false).then((val){
+//                    Navigator.of(context).pop();
+//                    Navigator.pushReplacement(
+//                        context,
+//                        PageRouteBuilder(
+//                            pageBuilder: (BuildContext context, _, __) => SplashScreen(),
+//                            transitionsBuilder:
+//                                (_, Animation<double> animation, __, Widget child) {
+//                              return new FadeTransition(
+//                                  opacity: animation, child: child);
+//                            }));
+//                  });
+//                },
+//              ),
+            ],
+          ))
         ],
       ),
     );
