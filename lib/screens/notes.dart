@@ -1,5 +1,6 @@
 import 'package:church_express/providers/note_provider.dart';
 import 'package:church_express/screens/add_note.dart';
+import 'package:church_express/screens/welcome.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
@@ -17,19 +18,21 @@ class _NotesState extends State<Notes> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _globalKey,
-      appBar: AppBar(
-        title: Text(
-          "My Notes",
-          style: appBarTextStyle,
-        ),
-        backgroundColor: appBarColor,
-        leading: IconButton(
-            icon: Image.asset("assets/icons/drawer_icon.png"),
-            onPressed: () {
-              _globalKey.currentState.openDrawer();
-            }),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        key: _globalKey,
+        appBar: AppBar(
+          title: Text(
+            "My Notes",
+            style: appBarTextStyle,
+          ),
+          backgroundColor: appBarColor,
+          leading: IconButton(
+              icon: Image.asset("assets/icons/drawer_icon.png"),
+              onPressed: () {
+                _globalKey.currentState.openDrawer();
+              }),
 //        actions: <Widget>[
 //          IconButton(
 //            icon: Icon(
@@ -39,87 +42,100 @@ class _NotesState extends State<Notes> {
 //            ),
 //          )
 //        ],
-      ),
-      drawer: AppDrawer(),
-      body: FutureBuilder(
-          future: NoteProvider.getNoteList(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              final notes = snapshot.data;
-              return ListView.builder(
-                physics: BouncingScrollPhysics(),
-                  itemCount: notes.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                                pageBuilder: (BuildContext context, _, __) => AddNote(NoteMode.Editing, notes[index]),
-                                transitionsBuilder:
-                                    (_, Animation<double> animation, __, Widget child) {
-                                  return new FadeTransition(
-                                      opacity: animation, child: child);
-                                }));
-                      },
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10.0, bottom: 10.0, left: 13.0, right: 13.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      CircleAvatar(
-                                        backgroundColor: floatButtonColor,
-                                        radius: 3.0,
-                                      ),
-                                      SizedBox(width: 5.0,),
-                                      _NoteTitle(notes[index]['title']),
-                                    ],
-                                  )
+        ),
+        drawer: AppDrawer(),
+        body: FutureBuilder(
+            future: NoteProvider.getNoteList(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                final notes = snapshot.data;
+                return ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                    itemCount: notes.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                  pageBuilder: (BuildContext context, _, __) => AddNote(NoteMode.Editing, notes[index]),
+                                  transitionsBuilder:
+                                      (_, Animation<double> animation, __, Widget child) {
+                                    return new FadeTransition(
+                                        opacity: animation, child: child);
+                                  }));
+                        },
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 10.0, bottom: 10.0, left: 13.0, right: 13.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        CircleAvatar(
+                                          backgroundColor: floatButtonColor,
+                                          radius: 3.0,
+                                        ),
+                                        SizedBox(width: 5.0,),
+                                        _NoteTitle(notes[index]['title']),
+                                      ],
+                                    )
 //                                  _TimeTitle("09-10-2019")
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5.0,
-                              ),
-                              // ignore: missing_return
-                              _NoteText(notes[index]['text'])
-                            ],
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
+                                // ignore: missing_return
+                                _NoteText(notes[index]['text'])
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  });
-            }
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }),
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: floatButtonColor,
-          child: Icon(
-            FontAwesomeIcons.plus,
-            color: Color(0xFF000000),
-            size: 14.0,
-          ),
-          onPressed: () {
-            Navigator.push(
-                context,
-                PageRouteBuilder(
-                    pageBuilder: (BuildContext context, _, __) => AddNote(NoteMode.Adding, null),
-                    transitionsBuilder:
-                        (_, Animation<double> animation, __, Widget child) {
-                      return new FadeTransition(
-                          opacity: animation, child: child);
-                    }));
-          }),
+                      );
+                    });
+              }
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }),
+        floatingActionButton: FloatingActionButton(
+            backgroundColor: floatButtonColor,
+            child: Icon(
+              FontAwesomeIcons.plus,
+              color: Color(0xFF000000),
+              size: 14.0,
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                      pageBuilder: (BuildContext context, _, __) => AddNote(NoteMode.Adding, null),
+                      transitionsBuilder:
+                          (_, Animation<double> animation, __, Widget child) {
+                        return new FadeTransition(
+                            opacity: animation, child: child);
+                      }));
+            }),
+      ),
     );
+  }
+
+  Future<bool> _onWillPop() {
+    return  Navigator.push(
+        context,
+        PageRouteBuilder(
+            pageBuilder: (BuildContext context, _, __) => Welcome(),
+            transitionsBuilder:
+                (_, Animation<double> animation, __, Widget child) {
+              return new FadeTransition(
+                  opacity: animation, child: child);
+            }));
   }
 }
 

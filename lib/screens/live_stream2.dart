@@ -5,6 +5,7 @@ import 'package:church_express/models/LiveVids.dart';
 import 'package:church_express/models/channel_model.dart';
 import 'package:church_express/models/video_model.dart';
 import 'package:church_express/screens/video_screens.dart';
+import 'package:church_express/screens/welcome.dart';
 import 'package:church_express/services/api_service.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
@@ -278,20 +279,22 @@ class _LiveStream2State extends State<LiveStream2> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _globalKey,
-      drawer: AppDrawer(),
-      appBar: AppBar(
-        title: Text(
-          "Videos",
-          style: appBarTextStyle,
-        ),
-        backgroundColor: appBarColor,
-        leading: IconButton(
-            icon: Image.asset("assets/icons/drawer_icon.png"),
-            onPressed: () {
-              _globalKey.currentState.openDrawer();
-            }),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        key: _globalKey,
+        drawer: AppDrawer(),
+        appBar: AppBar(
+          title: Text(
+            "Videos",
+            style: appBarTextStyle,
+          ),
+          backgroundColor: appBarColor,
+          leading: IconButton(
+              icon: Image.asset("assets/icons/drawer_icon.png"),
+              onPressed: () {
+                _globalKey.currentState.openDrawer();
+              }),
 //        actions: <Widget>[
 //          IconButton(
 //            icon: Icon(
@@ -301,40 +304,40 @@ class _LiveStream2State extends State<LiveStream2> {
 //            ),
 //          )
 //        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          Container(
-              height: MediaQuery.of(context).size.height * 0.2,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                      "assets/banner.png",
-                    ),
-                    fit: BoxFit.fill,
-                  ))),
-          _noOfVids == 0 ? SizedBox.shrink() :
-          FutureBuilder(
-              future: theVideos,
-              builder: (BuildContext context, AsyncSnapshot<LiveVids> snapshot) {
-                if(snapshot.hasData) {
-                  return Expanded(
-                    flex: 1,
-                    child: Container(
-                      height: 70.0,
-                      child: ListView.builder(
-                          physics: BouncingScrollPhysics(),
-                          itemCount: snapshot.data.items.length,
-                          itemBuilder: (context, index) {
-                            Items item = snapshot.data.items[index];
-                            return _buildLiveVideo(item);
-                          }),
-                    ),
-                  );
-                } else {
-                  return Container(height: 0.0, width: 0.0,);
-                }
-              }),
+        ),
+        body: Column(
+          children: <Widget>[
+            Container(
+                height: MediaQuery.of(context).size.height * 0.2,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(
+                        "assets/banner.png",
+                      ),
+                      fit: BoxFit.fill,
+                    ))),
+            _noOfVids == 0 ? SizedBox.shrink() :
+            FutureBuilder(
+                future: theVideos,
+                builder: (BuildContext context, AsyncSnapshot<LiveVids> snapshot) {
+                  if(snapshot.hasData) {
+                    return Expanded(
+                      flex: 1,
+                      child: Container(
+                        height: 70.0,
+                        child: ListView.builder(
+                            physics: BouncingScrollPhysics(),
+                            itemCount: snapshot.data.items.length,
+                            itemBuilder: (context, index) {
+                              Items item = snapshot.data.items[index];
+                              return _buildLiveVideo(item);
+                            }),
+                      ),
+                    );
+                  } else {
+                    return Container(height: 0.0, width: 0.0,);
+                  }
+                }),
 //          Expanded(
 //            flex: 1,
 //            child: Container(
@@ -356,45 +359,59 @@ class _LiveStream2State extends State<LiveStream2> {
 //                  }),
 //            ),
 //          ),
-          _channel != null ? NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification scrollDetails) {
-                if (!_isLoading &&
-                    _channel.videos.length != int.parse(_channel.videoCount) &&
-                    scrollDetails.metrics.pixels ==
-                        scrollDetails.metrics.maxScrollExtent) {
-                  print(_channel.videos[0].channelTitle);
-                  _loadMoreVideos();
-                }
-                return false;
-              }, child: Expanded(
-            flex: 6,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemCount: 1 + _channel.videos.length,
-                itemBuilder: (BuildContext context, int index) {
-                  if (index == 0) {
-                    return SizedBox.shrink();
+            _channel != null ? NotificationListener<ScrollNotification>(
+                onNotification: (ScrollNotification scrollDetails) {
+                  if (!_isLoading &&
+                      _channel.videos.length != int.parse(_channel.videoCount) &&
+                      scrollDetails.metrics.pixels ==
+                          scrollDetails.metrics.maxScrollExtent) {
+                    print(_channel.videos[0].channelTitle);
+                    _loadMoreVideos();
                   }
-                  Video video = _channel.videos[index - 1];
-                  return _buildVideo(video);
-                },
-              ),
-            ),
-          )
-          ) : Expanded(
-            flex: 8,
-            child: Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  appBarColor, // Red
+                  return false;
+                }, child: Expanded(
+              flex: 6,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: 1 + _channel.videos.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index == 0) {
+                      return SizedBox.shrink();
+                    }
+                    Video video = _channel.videos[index - 1];
+                    return _buildVideo(video);
+                  },
                 ),
               ),
-            ),
-          )
-        ],
-      )
+            )
+            ) : Expanded(
+              flex: 8,
+              child: Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    appBarColor, // Red
+                  ),
+                ),
+              ),
+            )
+          ],
+        )
+      ),
     );
   }
+
+  Future<bool> _onWillPop() {
+    return  Navigator.push(
+        context,
+        PageRouteBuilder(
+            pageBuilder: (BuildContext context, _, __) => Welcome(),
+            transitionsBuilder:
+                (_, Animation<double> animation, __, Widget child) {
+              return new FadeTransition(
+                  opacity: animation, child: child);
+            }));
+  }
+
 }

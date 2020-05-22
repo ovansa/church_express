@@ -7,6 +7,7 @@ import 'package:church_express/widgets/bottom_nav_widget/bottom_navigation_bar.d
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
 import 'package:church_express/widgets/event_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -27,24 +28,26 @@ class _WelcomeState extends State<Welcome> {
   final GlobalKey<ScaffoldState> _globalKey = new GlobalKey();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _globalKey,
-      appBar: AppBar(
-          title: Text(
-            "Home",
-            style: appBarTextStyle,
-          ),
-          backgroundColor: appBarColor,
-          leading: IconButton(
-              icon: Image.asset("assets/icons/drawer_icon.png"),
-              onPressed: () {
-                _globalKey.currentState.openDrawer();
-              })),
-      drawer: AppDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        child: EventItem2()
-      ),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        key: _globalKey,
+        appBar: AppBar(
+            title: Text(
+              "Home",
+              style: appBarTextStyle,
+            ),
+            backgroundColor: appBarColor,
+            leading: IconButton(
+                icon: Image.asset("assets/icons/drawer_icon.png"),
+                onPressed: () {
+                  _globalKey.currentState.openDrawer();
+                })),
+        drawer: AppDrawer(),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+          child: EventItem2()
+        ),
 //      bottomNavigationBar: BottomNavigationBar(
 //          backgroundColor: bottomNavBarColor,
 //          type: BottomNavigationBarType.fixed,
@@ -94,7 +97,12 @@ class _WelcomeState extends State<Welcome> {
 //                  style: bottomNavBarTextStyle,
 //                ))
 //          ]),
+      ),
     );
+  }
+
+  Future<bool> _onWillPop() {
+    return  SystemNavigator.pop();
   }
 
   void onTabTapped(int index) {

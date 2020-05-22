@@ -61,12 +61,26 @@ class _VideoScreenState extends State<VideoScreen> {
                 _globalKey.currentState.openDrawer();
               })),
       drawer: AppDrawer(),
-      body: YoutubePlayer(
-        controller: _controller,
-        showVideoProgressIndicator: true,
-        onReady: () {
-          print('Player is ready.');
-        },
+      body: Scaffold(
+        body: Column(
+          children: <Widget>[
+            Container(
+              height: MediaQuery.of(context).size.height * 0.25,
+              child:  YoutubePlayer(
+                controller: _controller,
+                showVideoProgressIndicator: true,
+                onReady: () {
+                  print('Player is ready.');
+                },
+              ),
+            ),
+            Expanded(child: Container(
+              child: Center(
+                child: Text("The Note Space"),
+              ),
+            ))
+          ],
+        ),
       ),
     );
   }

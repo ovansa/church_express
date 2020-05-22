@@ -4,6 +4,7 @@ import 'package:church_express/screens/bible/books_page.dart';
 import 'package:church_express/screens/give.dart';
 import 'package:church_express/screens/home.dart';
 import 'package:church_express/screens/giving.dart';
+import 'package:church_express/screens/hustle/hustle_list.dart';
 import 'package:church_express/screens/live_stream.dart';
 import 'package:church_express/screens/live_stream2.dart';
 import 'package:church_express/screens/notes.dart';
@@ -127,6 +128,24 @@ class AppDrawer extends StatelessWidget {
                             context,
                             PageRouteBuilder(
                                 pageBuilder: (BuildContext context, _, __) => Notes(),
+                                transitionsBuilder:
+                                    (_, Animation<double> animation, __, Widget child) {
+                                  return new FadeTransition(
+                                      opacity: animation, child: child);
+                                }));
+                      }),
+                  createDrawerItem(
+                      icon: FontAwesomeIcons.envelope,
+                      text: Text(
+                        "Hustles",
+                        style: drawerItemsStyle,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                                pageBuilder: (BuildContext context, _, __) => HustleList(),
                                 transitionsBuilder:
                                     (_, Animation<double> animation, __, Widget child) {
                                   return new FadeTransition(

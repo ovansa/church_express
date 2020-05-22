@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:church_express/screens/bible/books.dart';
 import 'package:church_express/screens/bible/chapter_list_page.dart';
+import 'package:church_express/screens/welcome.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
@@ -40,75 +41,91 @@ class _BookPageState extends State<BookPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        key: _globalKey,
-        appBar: AppBar(
-            title: Text(
-              "Bible - King James Version",
-              style: appBarTextStyle,
-            ),
-            backgroundColor: appBarColor,
-            leading: IconButton(
-                icon: Image.asset("assets/icons/drawer_icon.png"),
-                onPressed: () {
-                  _globalKey.currentState.openDrawer();
-                })),
-        drawer: AppDrawer(),
-        body: Container(
-          child: Padding(
-            padding:
-            const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-            child: FutureBuilder<Books>(
-                future: theBooks,
-                builder: (BuildContext context, AsyncSnapshot<Books> snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                        itemCount: snapshot.data.data.length,
-                        itemBuilder: (context, index) {
-                          Data singleBook = snapshot.data.data[index];
-                          return GestureDetector(
-                            onTap: () {
-                              print(singleBook.name);
-                              print(singleBook.id);
-                              Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                      pageBuilder: (BuildContext context, _, __) => ChapterListPage(bookId: singleBook.id, bookName: singleBook.name,),
-                                      transitionsBuilder:
-                                          (_, Animation<double> animation, __, Widget child) {
-                                        return new FadeTransition(
-                                            opacity: animation, child: child);
-                                      }));
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                height: 50.0,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    border: Border.all(
-                                        width: 1.0,
-                                        color: Colors.black.withOpacity(0.3))),
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 15.0),
-                                  child: Row(
-                                    children: <Widget>[Text(singleBook.name, style: bibleTitleStyle,)],
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+          key: _globalKey,
+          appBar: AppBar(
+              title: Text(
+                "Bible - King James Version",
+                style: appBarTextStyle,
+              ),
+              backgroundColor: appBarColor,
+              leading: IconButton(
+                  icon: Image.asset("assets/icons/drawer_icon.png"),
+                  onPressed: () {
+                    _globalKey.currentState.openDrawer();
+                  })),
+          drawer: AppDrawer(),
+          body: Container(
+            child: Padding(
+              padding:
+              const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              child: FutureBuilder<Books>(
+                  future: theBooks,
+                  builder: (BuildContext context, AsyncSnapshot<Books> snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                          itemCount: snapshot.data.data.length,
+                          itemBuilder: (context, index) {
+                            Data singleBook = snapshot.data.data[index];
+                            return GestureDetector(
+                              onTap: () {
+                                print(singleBook.name);
+                                print(singleBook.id);
+                                Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                        pageBuilder: (BuildContext context, _, __) => ChapterListPage(bookId: singleBook.id, bookName: singleBook.name,),
+                                        transitionsBuilder:
+                                            (_, Animation<double> animation, __, Widget child) {
+                                          return new FadeTransition(
+                                              opacity: animation, child: child);
+                                        }));
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  height: 50.0,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      border: Border.all(
+                                          width: 1.0,
+                                          color: Colors.black.withOpacity(0.3))),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 15.0),
+                                    child: Row(
+                                      children: <Widget>[Text(singleBook.name, style: bibleTitleStyle,)],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        });
-                  } else {
-                    return Center(
-                      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(appBarColor),),
-                    );
-                  }
-                }),
-          ),
-        ));
+                            );
+                          });
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(appBarColor),),
+                      );
+                    }
+                  }),
+            ),
+          )),
+    );
+
+
+  }
+  Future<bool> _onWillPop() {
+    return  Navigator.push(
+        context,
+        PageRouteBuilder(
+            pageBuilder: (BuildContext context, _, __) => Welcome(),
+            transitionsBuilder:
+                (_, Animation<double> animation, __, Widget child) {
+              return new FadeTransition(
+                  opacity: animation, child: child);
+            }));
   }
 
   @override

@@ -37,3 +37,7 @@ TextStyle bibleChapterStyle = GoogleFonts.montserrat(fontSize: 18.0, color: Colo
 TextStyle bibleContentStyle = GoogleFonts.montserrat(fontSize: 12.0, color: Color(0xFF262F3A), fontWeight: FontWeight.w400, height: 2.0);
 
 TextStyle donateTtitleStyle = GoogleFonts.montserrat(fontSize: 14.0, color: Color(0xFFFFFFFF), fontWeight: FontWeight.w500);
+
+TextStyle hustleOwnerNameStyle = GoogleFonts.montserrat(fontSize: 12.0, color: Color(0xFF000000), fontWeight: FontWeight.w500, letterSpacing: 1.0);
+TextStyle hustleBusinessNameStyle = GoogleFonts.montserrat(fontSize: 14.0, color: Color(0xFF000000), fontWeight: FontWeight.w500, letterSpacing: 1.0);
+TextStyle hustlsDetailsStyle = GoogleFonts.montserrat(fontSize: 14.0, color: Color(0xFFFFFFFF), fontWeight: FontWeight.w500, letterSpacing: 1.0);

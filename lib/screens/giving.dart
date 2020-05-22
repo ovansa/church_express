@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:church_express/screens/welcome.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,182 +38,197 @@ class _GivingState extends State<Giving> {
   
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: new AppBar(title: Text("Pay")),
-      body: new Container(
-        padding: const EdgeInsets.all(20.0),
-        child: new Form(
-          key: _formKey,
-          child: new SingleChildScrollView(
-            child: new ListBody(
-              children: <Widget>[
-                new Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    new Expanded(
-                      child: const Text('Initalize transaction from:'),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: new AppBar(title: Text("Pay")),
+        body: new Container(
+          padding: const EdgeInsets.all(20.0),
+          child: new Form(
+            key: _formKey,
+            child: new SingleChildScrollView(
+              child: new ListBody(
+                children: <Widget>[
+                  new Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      new Expanded(
+                        child: const Text('Initalize transaction from:'),
+                      ),
+                      new Expanded(
+                        child: new Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              new RadioListTile<int>(
+                                value: 0,
+                                groupValue: _radioValue,
+                                onChanged: _handleRadioValueChanged,
+                                title: const Text('Local'),
+                              ),
+                              new RadioListTile<int>(
+                                value: 1,
+                                groupValue: _radioValue,
+                                onChanged: _handleRadioValueChanged,
+                                title: const Text('Server'),
+                              ),
+                            ]),
+                      )
+                    ],
+                  ),
+                  _border,
+                  _verticalSizeBox,
+                  new TextFormField(
+                    decoration: const InputDecoration(
+                      border: const UnderlineInputBorder(),
+                      labelText: 'Card number',
                     ),
-                    new Expanded(
-                      child: new Column(
+                    onSaved: (String value) => _cardNumber = value,
+                  ),
+                  _verticalSizeBox,
+                  new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      new Expanded(
+                        child: new TextFormField(
+                          decoration: const InputDecoration(
+                            border: const UnderlineInputBorder(),
+                            labelText: 'CVV',
+                          ),
+                          onSaved: (String value) => _cvv = value,
+                        ),
+                      ),
+                      _horizontalSizeBox,
+                      new Expanded(
+                        child: new TextFormField(
+                          decoration: const InputDecoration(
+                            border: const UnderlineInputBorder(),
+                            labelText: 'Expiry Month',
+                          ),
+                          onSaved: (String value) =>
+                          _expiryMonth = int.tryParse(value),
+                        ),
+                      ),
+                      _horizontalSizeBox,
+                      new Expanded(
+                        child: new TextFormField(
+                          decoration: const InputDecoration(
+                            border: const UnderlineInputBorder(),
+                            labelText: 'Expiry Year',
+                          ),
+                          onSaved: (String value) =>
+                          _expiryYear = int.tryParse(value),
+                        ),
+                      )
+                    ],
+                  ),
+                  _verticalSizeBox,
+                  Theme(
+                    data: Theme.of(context).copyWith(
+                      accentColor: green,
+                      primaryColorLight: Colors.white,
+                      primaryColorDark: navyBlue,
+                      textTheme: Theme.of(context).textTheme.copyWith(
+                        body2: TextStyle(
+                          color: lightBlue,
+                        ),
+                      ),
+                    ),
+                    child: Builder(
+                      builder: (context) {
+                        return _inProgress
+                            ? new Container(
+                          alignment: Alignment.center,
+                          height: 50.0,
+                          child: Platform.isIOS
+                              ? new CupertinoActivityIndicator()
+                              : new CircularProgressIndicator(),
+                        )
+                            : new Column(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            new RadioListTile<int>(
-                              value: 0,
-                              groupValue: _radioValue,
-                              onChanged: _handleRadioValueChanged,
-                              title: const Text('Local'),
+                            _getPlatformButton(
+                                'Charge Card', () => _startAfreshCharge()),
+                            _verticalSizeBox,
+                            _border,
+                            new SizedBox(
+                              height: 40.0,
                             ),
-                            new RadioListTile<int>(
-                              value: 1,
-                              groupValue: _radioValue,
-                              onChanged: _handleRadioValueChanged,
-                              title: const Text('Server'),
-                            ),
-                          ]),
-                    )
-                  ],
-                ),
-                _border,
-                _verticalSizeBox,
-                new TextFormField(
-                  decoration: const InputDecoration(
-                    border: const UnderlineInputBorder(),
-                    labelText: 'Card number',
-                  ),
-                  onSaved: (String value) => _cardNumber = value,
-                ),
-                _verticalSizeBox,
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    new Expanded(
-                      child: new TextFormField(
-                        decoration: const InputDecoration(
-                          border: const UnderlineInputBorder(),
-                          labelText: 'CVV',
-                        ),
-                        onSaved: (String value) => _cvv = value,
-                      ),
-                    ),
-                    _horizontalSizeBox,
-                    new Expanded(
-                      child: new TextFormField(
-                        decoration: const InputDecoration(
-                          border: const UnderlineInputBorder(),
-                          labelText: 'Expiry Month',
-                        ),
-                        onSaved: (String value) =>
-                        _expiryMonth = int.tryParse(value),
-                      ),
-                    ),
-                    _horizontalSizeBox,
-                    new Expanded(
-                      child: new TextFormField(
-                        decoration: const InputDecoration(
-                          border: const UnderlineInputBorder(),
-                          labelText: 'Expiry Year',
-                        ),
-                        onSaved: (String value) =>
-                        _expiryYear = int.tryParse(value),
-                      ),
-                    )
-                  ],
-                ),
-                _verticalSizeBox,
-                Theme(
-                  data: Theme.of(context).copyWith(
-                    accentColor: green,
-                    primaryColorLight: Colors.white,
-                    primaryColorDark: navyBlue,
-                    textTheme: Theme.of(context).textTheme.copyWith(
-                      body2: TextStyle(
-                        color: lightBlue,
-                      ),
-                    ),
-                  ),
-                  child: Builder(
-                    builder: (context) {
-                      return _inProgress
-                          ? new Container(
-                        alignment: Alignment.center,
-                        height: 50.0,
-                        child: Platform.isIOS
-                            ? new CupertinoActivityIndicator()
-                            : new CircularProgressIndicator(),
-                      )
-                          : new Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          _getPlatformButton(
-                              'Charge Card', () => _startAfreshCharge()),
-                          _verticalSizeBox,
-                          _border,
-                          new SizedBox(
-                            height: 40.0,
-                          ),
-                          new Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              new Flexible(
-                                flex: 3,
-                                child: new DropdownButtonHideUnderline(
-                                  child: new InputDecorator(
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      isDense: true,
-                                      hintText: 'Checkout method',
-                                    ),
-                                    isEmpty: _method == null,
-                                    child: new DropdownButton<
-                                        CheckoutMethod>(
-                                      value: _method,
-                                      isDense: true,
-                                      onChanged: (CheckoutMethod value) {
-                                        setState(() {
-                                          _method = value;
-                                        });
-                                      },
-                                      items: banks.map((String value) {
-                                        return new DropdownMenuItem<
-                                            CheckoutMethod>(
-                                          value:
-                                          _parseStringToMethod(value),
-                                          child: new Text(value),
-                                        );
-                                      }).toList(),
+                            new Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                new Flexible(
+                                  flex: 3,
+                                  child: new DropdownButtonHideUnderline(
+                                    child: new InputDecorator(
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        isDense: true,
+                                        hintText: 'Checkout method',
+                                      ),
+                                      isEmpty: _method == null,
+                                      child: new DropdownButton<
+                                          CheckoutMethod>(
+                                        value: _method,
+                                        isDense: true,
+                                        onChanged: (CheckoutMethod value) {
+                                          setState(() {
+                                            _method = value;
+                                          });
+                                        },
+                                        items: banks.map((String value) {
+                                          return new DropdownMenuItem<
+                                              CheckoutMethod>(
+                                            value:
+                                            _parseStringToMethod(value),
+                                            child: new Text(value),
+                                          );
+                                        }).toList(),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              _horizontalSizeBox,
-                              new Flexible(
-                                flex: 2,
-                                child: new Container(
-                                  width: double.infinity,
-                                  child: _getPlatformButton(
-                                    'Checkout',
-                                        () => _handleCheckout(context),
+                                _horizontalSizeBox,
+                                new Flexible(
+                                  flex: 2,
+                                  child: new Container(
+                                    width: double.infinity,
+                                    child: _getPlatformButton(
+                                      'Checkout',
+                                          () => _handleCheckout(context),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          )
-                        ],
-                      );
-                    },
-                  ),
-                )
-              ],
+                              ],
+                            )
+                          ],
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<bool> _onWillPop() {
+    return  Navigator.push(
+        context,
+        PageRouteBuilder(
+            pageBuilder: (BuildContext context, _, __) => Welcome(),
+            transitionsBuilder:
+                (_, Animation<double> animation, __, Widget child) {
+              return new FadeTransition(
+                  opacity: animation, child: child);
+            }));
   }
   void _handleRadioValueChanged(int value) =>
       setState(() => _radioValue = value);
