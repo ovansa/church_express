@@ -1,5 +1,6 @@
 import 'package:church_express/screens/add_event.dart';
 import 'package:church_express/screens/authentication/preferences.dart';
+import 'package:church_express/screens/bible/bib/new_books_page.dart';
 import 'package:church_express/screens/bible/books_page.dart';
 import 'package:church_express/screens/give.dart';
 import 'package:church_express/screens/home.dart';
@@ -72,7 +73,7 @@ class AppDrawer extends StatelessWidget {
                         Navigator.push(
                             context,
                             PageRouteBuilder(
-                                pageBuilder: (BuildContext context, _, __) => BookPage(),
+                                pageBuilder: (BuildContext context, _, __) => NewBooksPage(),
                                 transitionsBuilder:
                                     (_, Animation<double> animation, __, Widget child) {
                                   return new FadeTransition(

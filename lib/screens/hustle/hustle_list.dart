@@ -1,3 +1,4 @@
+import 'package:church_express/screens/hustle/add_hustle.dart';
 import 'package:church_express/screens/welcome.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
@@ -471,7 +472,19 @@ class _HustleListState extends State<HustleList> {
             ],
           ),
         ),
+        floatingActionButton: FloatingActionButton(backgroundColor: Color(0xFFFFDA1A), onPressed: (){
+          Navigator.push(
+              context,
+              PageRouteBuilder(
+                  pageBuilder: (BuildContext context, _, __) => AddHustle(),
+                  transitionsBuilder:
+                      (_, Animation<double> animation, __, Widget child) {
+                    return new FadeTransition(
+                        opacity: animation, child: child);
+                  }));
+        }, child: Icon(FontAwesomeIcons.plus, size: 15.0, color: Color(0xFF262F3A),),),
       ),
+
     );
   }
 

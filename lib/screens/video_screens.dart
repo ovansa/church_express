@@ -1,3 +1,4 @@
+import 'package:church_express/screens/add_note.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
@@ -62,22 +63,22 @@ class _VideoScreenState extends State<VideoScreen> {
               constraints: BoxConstraints(),
               child: Column(
                 children: <Widget>[
-            Container(
-              height: MediaQuery.of(context).size.height * 0.35,
-              child: YoutubePlayer(
-                controller: _controller,
-                showVideoProgressIndicator: true,
-                onReady: () {
-                  print('Player is ready.');
-                },
-              ),
-            ),
-//                  Container(
-//                    height: MediaQuery.of(context).size.height * 0.35,
-//                    decoration: BoxDecoration(color: Colors.grey),
-//                  ),
+//            Container(
+//              height: MediaQuery.of(context).size.height * 0.35,
+//              child: YoutubePlayer(
+//                controller: _controller,
+//                showVideoProgressIndicator: true,
+//                onReady: () {
+//                  print('Player is ready.');
+//                },
+//              ),
+//            ),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.35,
+                    decoration: BoxDecoration(color: Colors.grey),
+                  ),
                   SizedBox(
-                    height: 50.0,
+                    height: 10.0,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -90,7 +91,7 @@ class _VideoScreenState extends State<VideoScreen> {
                               style: noteTitleStyle,
                             ),
                             SizedBox(
-                              height: 10.0,
+                              height: 1.0,
                             ),
                             TextField(
 //                  controller: _titleController,
@@ -101,7 +102,7 @@ class _VideoScreenState extends State<VideoScreen> {
                               style: noteTextStyle,
                             ),
                             SizedBox(
-                              height: 10.0,
+                              height: 5.0,
                             ),
                             Text(
                               "Note:",
@@ -118,9 +119,12 @@ class _VideoScreenState extends State<VideoScreen> {
                               ),
                               style: noteTextStyle,
                               keyboardType: TextInputType.multiline,
-                              maxLines: 22,
+                              maxLines: 20,
                             ),
                             SizedBox(height: 20.0),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                                child: NoteButton("Add", Colors.green, (){}))
                           ],
                         )),
                   )

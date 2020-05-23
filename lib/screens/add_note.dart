@@ -96,7 +96,7 @@ class _AddNoteState extends State<AddNote> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        _NoteButton("Save", floatButtonColor, () {
+                        NoteButton("Save", floatButtonColor, () {
                           final title = _titleController.text;
                           final text = _textController.text;
                           if (widget?.noteMode == NoteMode.Adding) {
@@ -111,11 +111,11 @@ class _AddNoteState extends State<AddNote> {
                           }
                           Navigator.pop(context);
                         }),
-                        _NoteButton("Discard", Color(0xFF545454), () {
+                        NoteButton("Discard", Color(0xFF545454), () {
                           Navigator.pop(context);
                         }),
                         widget.noteMode == NoteMode.Editing
-                            ? _NoteButton("Delete", Colors.red, () async {
+                            ? NoteButton("Delete", Colors.red, () async {
                                 await NoteProvider.deleteNote(
                                     widget.note['id']);
                                 Navigator.pop(context);
@@ -128,12 +128,12 @@ class _AddNoteState extends State<AddNote> {
   }
 }
 
-class _NoteButton extends StatelessWidget {
+class NoteButton extends StatelessWidget {
   final String _text;
   final Color _color;
   final Function _onPressed;
 
-  _NoteButton(this._text, this._color, this._onPressed);
+  NoteButton(this._text, this._color, this._onPressed);
 
   @override
   Widget build(BuildContext context) {
