@@ -1,4 +1,6 @@
+import 'package:church_express/providers/note_provider.dart';
 import 'package:church_express/screens/add_note.dart';
+import 'package:church_express/screens/live_stream.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
@@ -44,25 +46,28 @@ class _VideoScreenState extends State<VideoScreen> {
     super.dispose();
   }
 
+  final TextEditingController _textController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        key: _globalKey,
-        appBar: AppBar(
-          title: Text(
-            "Video",
-            style: appBarTextStyle,
+    return WillPopScope(
+      child: Scaffold(
+          key: _globalKey,
+          appBar: AppBar(
+            title: Text(
+              "Video",
+              style: appBarTextStyle,
+            ),
+            backgroundColor: appBarColor,
           ),
-          backgroundColor: appBarColor,
-        ),
-        body: Scaffold(
-          resizeToAvoidBottomPadding: false,
-          body: SingleChildScrollView(
+          body: Scaffold(
+            resizeToAvoidBottomPadding: false,
+            body: SingleChildScrollView(
 
-            child: ConstrainedBox(
-              constraints: BoxConstraints(),
-              child: Column(
-                children: <Widget>[
+              child: ConstrainedBox(
+                constraints: BoxConstraints(),
+                child: Column(
+                  children: <Widget>[
 //            Container(
 //              height: MediaQuery.of(context).size.height * 0.35,
 //              child: YoutubePlayer(
@@ -73,65 +78,81 @@ class _VideoScreenState extends State<VideoScreen> {
 //                },
 //              ),
 //            ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.35,
-                    decoration: BoxDecoration(color: Colors.grey),
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Title:",
-                              style: noteTitleStyle,
-                            ),
-                            SizedBox(
-                              height: 1.0,
-                            ),
-                            TextField(
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.35,
+                      decoration: BoxDecoration(color: Colors.grey),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Title:",
+                                style: noteTitleStyle,
+                              ),
+                              SizedBox(
+                                height: 1.0,
+                              ),
+                              TextField(
 //                  controller: _titleController,
-                              cursorColor: Colors.grey,
-                              decoration: InputDecoration.collapsed(
-                                hintText: "Title",
+                                cursorColor: Colors.grey,
+                                decoration: InputDecoration.collapsed(
+                                  hintText: "Title",
+                                ),
+                                style: noteTextStyle,
                               ),
-                              style: noteTextStyle,
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            Text(
-                              "Note:",
-                              style: noteTitleStyle,
-                            ),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            TextField(
-                              cursorColor: Colors.grey,
-//                  controller: _textController,
-                              decoration: InputDecoration.collapsed(
-                                hintText: "Note",
+                              SizedBox(
+                                height: 5.0,
                               ),
-                              style: noteTextStyle,
-                              keyboardType: TextInputType.multiline,
-                              maxLines: 20,
-                            ),
-                            SizedBox(height: 20.0),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                                child: NoteButton("Add", Colors.green, (){}))
-                          ],
-                        )),
-                  )
-                ],
+                              Text(
+                                "Note:",
+                                style: noteTitleStyle,
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              TextField(
+                                cursorColor: Colors.grey,
+                    controller: _textController,
+                                decoration: InputDecoration.collapsed(
+                                  hintText: "Note",
+                                ),
+                                style: noteTextStyle,
+                                keyboardType: TextInputType.multiline,
+                                maxLines: 20,
+                              ),
+                              SizedBox(height: 20.0),
+//                            Align(
+//                              alignment: Alignment.bottomRight,
+//                                child: NoteButton("Add", Colors.green, (){}))
+                            ],
+                          )),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ));
+          )),
+    );
   }
+  Future<bool> _onWillPop() {
+    final text = _textController.text;
+    final title = _textController.text.substring(0, 15);
+    NoteProvider.insertData({'title': title, 'text': text});
+    return  Navigator.push(
+        context,
+        PageRouteBuilder(
+            pageBuilder: (BuildContext context, _, __) => LiveStream(),
+            transitionsBuilder:
+                (_, Animation<double> animation, __, Widget child) {
+              return new FadeTransition(
+                  opacity: animation, child: child);
+            }));
+  }
+  
 }

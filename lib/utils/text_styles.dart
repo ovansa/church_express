@@ -25,6 +25,8 @@ TextStyle welcomeTextField = GoogleFonts.montserrat(fontSize: 13.0, color: Color
 TextStyle welcomeSubmitButton = GoogleFonts.montserrat(fontSize: 14.0, color: Color(0xFF262F3A), fontWeight: FontWeight.w500);
 TextStyle welcomeNewTitle = GoogleFonts.montserrat(fontSize: 12.0, color: Color(0xFF000000), fontWeight: FontWeight.w400);
 
+TextStyle welcomeArticlesTextStyle = GoogleFonts.montserrat(fontSize: 15.0, color: Color(0xFFFFFFFF), fontWeight: FontWeight.w500, letterSpacing: 1.0);
+
 TextStyle videoTitleStyle = GoogleFonts.montserrat(fontSize: 12.0, color: Color(0xFF000000), fontWeight: FontWeight.w700, letterSpacing: 1.3);
 TextStyle videoDescriptionStyle = GoogleFonts.montserrat(fontSize: 11.0, color: Color(0xFF000000), fontWeight: FontWeight.w400);
 TextStyle videoDateStyle = GoogleFonts.montserrat(fontSize: 10.0, color: Color(0xFF000000).withOpacity(0.4), fontWeight: FontWeight.w400);

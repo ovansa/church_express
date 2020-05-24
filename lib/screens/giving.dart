@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:church_express/screens/welcome.dart';
+import 'package:church_express/screens/welcome/welcome2.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -223,7 +224,7 @@ class _GivingState extends State<Giving> {
     return  Navigator.push(
         context,
         PageRouteBuilder(
-            pageBuilder: (BuildContext context, _, __) => Welcome(),
+            pageBuilder: (BuildContext context, _, __) => Welcome2(),
             transitionsBuilder:
                 (_, Animation<double> animation, __, Widget child) {
               return new FadeTransition(

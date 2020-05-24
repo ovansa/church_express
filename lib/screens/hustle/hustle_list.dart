@@ -1,5 +1,6 @@
 import 'package:church_express/screens/hustle/add_hustle.dart';
 import 'package:church_express/screens/welcome.dart';
+import 'package:church_express/screens/welcome/welcome2.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
@@ -492,7 +493,7 @@ class _HustleListState extends State<HustleList> {
     return  Navigator.push(
         context,
         PageRouteBuilder(
-            pageBuilder: (BuildContext context, _, __) => Welcome(),
+            pageBuilder: (BuildContext context, _, __) => Welcome2(),
             transitionsBuilder:
                 (_, Animation<double> animation, __, Widget child) {
               return new FadeTransition(

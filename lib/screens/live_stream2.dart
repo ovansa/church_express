@@ -6,6 +6,7 @@ import 'package:church_express/models/channel_model.dart';
 import 'package:church_express/models/video_model.dart';
 import 'package:church_express/screens/video_screens.dart';
 import 'package:church_express/screens/welcome.dart';
+import 'package:church_express/screens/welcome/welcome2.dart';
 import 'package:church_express/services/api_service.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
@@ -406,7 +407,7 @@ class _LiveStream2State extends State<LiveStream2> {
     return  Navigator.push(
         context,
         PageRouteBuilder(
-            pageBuilder: (BuildContext context, _, __) => Welcome(),
+            pageBuilder: (BuildContext context, _, __) => Welcome2(),
             transitionsBuilder:
                 (_, Animation<double> animation, __, Widget child) {
               return new FadeTransition(
