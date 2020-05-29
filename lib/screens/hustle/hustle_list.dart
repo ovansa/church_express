@@ -44,6 +44,7 @@ class _HustleListState extends State<HustleList> {
         ),
         drawer: AppDrawer(),
         body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             children: <Widget>[
               Padding(

@@ -12,6 +12,7 @@ import 'package:church_express/screens/notes.dart';
 import 'package:church_express/screens/splash_screen/splash_screen.dart';
 import 'package:church_express/screens/welcome.dart';
 import 'package:church_express/screens/welcome/welcome2.dart';
+import 'package:church_express/screens/welcome/welcome3.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/drawer_widgets/drawer_widgets.dart';
@@ -57,6 +58,24 @@ class AppDrawer extends StatelessWidget {
                             context,
                             PageRouteBuilder(
                                 pageBuilder: (BuildContext context, _, __) => Welcome2(),
+                                transitionsBuilder:
+                                    (_, Animation<double> animation, __, Widget child) {
+                                  return new FadeTransition(
+                                      opacity: animation, child: child);
+                                }));
+                      }),
+                  createDrawerItem(
+                      icon: FontAwesomeIcons.home,
+                      text: Text(
+                        "Home2",
+                        style: drawerItemsStyle,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                                pageBuilder: (BuildContext context, _, __) => Welcome3(),
                                 transitionsBuilder:
                                     (_, Animation<double> animation, __, Widget child) {
                                   return new FadeTransition(
