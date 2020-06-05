@@ -20,6 +20,7 @@ class _GiveState extends State<Give> {
   final GlobalKey<ScaffoldState> _scaffoldlKey = new GlobalKey();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _donateformKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _offeringformKey = GlobalKey<FormState>();
 
   String _cardNumber;
   String _cvv;
@@ -32,6 +33,7 @@ class _GiveState extends State<Give> {
 
   bool isDonateVisible = false;
   bool isTitheVisible = false;
+  bool isOfferingVisible = false;
 
   @override
   void initState() {
@@ -77,7 +79,15 @@ class _GiveState extends State<Give> {
             //Donate Button
             GestureDetector(
               onTap: () {
-                setState(() => isDonateVisible = !isDonateVisible);
+                setState(() {
+                  isDonateVisible = !isDonateVisible;
+                  if (isTitheVisible == true) {
+                    isTitheVisible = !isTitheVisible;
+                  }
+                  if (isOfferingVisible == true) {
+                    isOfferingVisible = !isOfferingVisible;
+                  }
+                });
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
@@ -171,7 +181,15 @@ class _GiveState extends State<Give> {
 
             GestureDetector(
               onTap: () {
-                setState(() => isTitheVisible = !isTitheVisible);
+                setState(() {
+                  isTitheVisible = !isTitheVisible;
+                  if (isDonateVisible == true) {
+                    isDonateVisible = !isDonateVisible;
+                  }
+                  if (isOfferingVisible == true) {
+                    isOfferingVisible = !isOfferingVisible;
+                  }
+                });
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
@@ -197,77 +215,173 @@ class _GiveState extends State<Give> {
               ),
             ),
 
-            Visibility(
-              maintainSize: true,
-              maintainAnimation: true,
-              maintainState: true,
-              visible: isTitheVisible,
+            isTitheVisible ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 35.0),
+              child: Form(
+                  key: _formKey,
+                  child: Flex(
+                    direction: Axis.vertical,
+                    children: <Widget>[
+                      ListTile(
+                        title: TextFormField(
+                          style: welcomeTextField,
+                          decoration: InputDecoration(
+                              hintText: "Enter Amount",
+                              hintStyle: welcomeTextField,
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(15.0)),
+                                borderSide: BorderSide(
+                                  color: Colors.black.withOpacity(0.6),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(15.0)),
+                                borderSide: BorderSide(
+                                    color: Colors.black.withOpacity(0.8),
+                                    width: 1.5),
+                              ),
+                              labelText: 'Enter Amount',
+                              labelStyle: welcomeTextField),
+                          initialValue: "",
+                          onSaved: (val) => _amountToDonate = int.tryParse(val) * 100,
+                          validator: (val) =>
+                          val == "" ? "Enter Amount" : null,
+                        ),
+                      ),
+                      SizedBox(height: 20.0,),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: FlatButton(
+                                onPressed: () {
+                                  _handleCheckout(context);
+                                },
+                                padding: EdgeInsets.symmetric(vertical: 13.0),
+                                color: floatButtonColor,
+                                child: Text(
+                                  "Donate",
+                                  style: welcomeSubmitButton,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                    ],
+                  )),
+            ) : SizedBox.shrink(),
+
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isOfferingVisible = !isOfferingVisible;
+                  if (isDonateVisible == true) {
+                    isDonateVisible = !isDonateVisible;
+                  }
+                  if (isTitheVisible == true) {
+                    isTitheVisible = !isTitheVisible;
+                  }
+                });
+              },
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 35.0),
-                child: Form(
-                    key: _formKey,
-                    child: Flex(
-                      direction: Axis.vertical,
+                padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
+                child: Container(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 25.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        ListTile(
-                          title: TextFormField(
-                            style: welcomeTextField,
-                            decoration: InputDecoration(
-                                hintText: "Enter Amount",
-                                hintStyle: welcomeTextField,
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(15.0)),
-                                  borderSide: BorderSide(
-                                    color: Colors.black.withOpacity(0.6),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(15.0)),
-                                  borderSide: BorderSide(
-                                      color: Colors.black.withOpacity(0.8),
-                                      width: 1.5),
-                                ),
-                                labelText: 'Enter Amount',
-                                labelStyle: welcomeTextField),
-                            initialValue: "",
-                            onSaved: (val) => _amountToDonate = int.tryParse(val) * 100,
-                            validator: (val) =>
-                            val == "" ? "Enter Amount" : null,
-                          ),
-                        ),
-                        SizedBox(height: 20.0,),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: FlatButton(
-                                  onPressed: () {
-                                    _handleCheckout(context);
-                                  },
-                                  padding: EdgeInsets.symmetric(vertical: 13.0),
-                                  color: floatButtonColor,
-                                  child: Text(
-                                    "Donate",
-                                    style: welcomeSubmitButton,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: new BorderRadius.circular(18.0),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15.0,
-                        ),
+                        Icon(FontAwesomeIcons.moneyBill, color: activeTabColor,),
+                        SizedBox(width: 20.0,),
+                        Text("Offering", style: donateTtitleStyle,)
                       ],
-                    )),
+                    ),
+                  ),
+                  height: 60.0,
+                  decoration: BoxDecoration(
+                      color: appBarColor,
+                      borderRadius: BorderRadius.circular(10.0)
+                  ),
+                ),
               ),
-            ) ,
+            ),
+
+            isOfferingVisible ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 35.0),
+              child: Form(
+                  key: _offeringformKey,
+                  child: Flex(
+                    direction: Axis.vertical,
+                    children: <Widget>[
+                      ListTile(
+                        title: TextFormField(
+                          style: welcomeTextField,
+                          decoration: InputDecoration(
+                              hintText: "Enter Amount",
+                              hintStyle: welcomeTextField,
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(15.0)),
+                                borderSide: BorderSide(
+                                  color: Colors.black.withOpacity(0.6),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(15.0)),
+                                borderSide: BorderSide(
+                                    color: Colors.black.withOpacity(0.8),
+                                    width: 1.5),
+                              ),
+                              labelText: 'Enter Amount',
+                              labelStyle: welcomeTextField),
+                          initialValue: "",
+                          onSaved: (val) => _amountToDonate = int.tryParse(val) * 100,
+                          validator: (val) =>
+                          val == "" ? "Enter Amount" : null,
+                        ),
+                      ),
+                      SizedBox(height: 20.0,),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: FlatButton(
+                                onPressed: () {
+                                  _handleCheckout(context);
+                                },
+                                padding: EdgeInsets.symmetric(vertical: 13.0),
+                                color: floatButtonColor,
+                                child: Text(
+                                  "Donate",
+                                  style: welcomeSubmitButton,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                    ],
+                  )),
+            ) : SizedBox.shrink()
 
 //            Padding(
 //              padding: const EdgeInsets.symmetric(horizontal: 20.0),

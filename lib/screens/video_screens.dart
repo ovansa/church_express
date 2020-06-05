@@ -6,6 +6,7 @@ import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -48,6 +49,14 @@ class _VideoScreenState extends State<VideoScreen> {
     super.dispose();
   }
 
+  Future<void> share() async {
+    await FlutterShare.share(
+        title: 'Example share',
+        text: 'Example share text',
+        linkUrl: 'https://flutter.dev/',
+        chooserTitle: 'Example Chooser Title');
+  }
+
   final TextEditingController _textController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
 
@@ -63,8 +72,15 @@ class _VideoScreenState extends State<VideoScreen> {
 
         final text = _textController.text;
         final title = _titleController.text;
-        NoteProvider.insertData({'title': title, 'text': text});
-        print("Saved ${text.toString()}");
+
+        if (text != "") {
+          if (title == "") {
+            NoteProvider.insertData({'title': text.substring(0, 10), 'text': text});
+          } else {
+            NoteProvider.insertData({'title': title, 'text': text});
+          }
+          print("Saved ${text.toString()}");
+        }
         Navigator.of(context).pop();
         return false;
       },
@@ -79,115 +95,116 @@ class _VideoScreenState extends State<VideoScreen> {
           ),
           body: Scaffold(
             resizeToAvoidBottomPadding: false,
-            body: SingleChildScrollView(
-
-              child: ConstrainedBox(
-                constraints: BoxConstraints(),
-                child: Column(
-                  children: <Widget>[
-            Container(
-              height: MediaQuery.of(context).size.height * 0.35,
-              child: YoutubePlayer(
-                controller: _controller,
-                showVideoProgressIndicator: true,
-                onReady: () {
-                  print('Player is ready.');
-                },
-              ),
-            ),
+            body: Column(
+              children: <Widget>[
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.35,
+                  child: YoutubePlayer(
+                    controller: _controller,
+                    showVideoProgressIndicator: true,
+                    onReady: () {
+                      print('Player is ready.');
+                    },
+                  ),
+                ),
 //                    Container(
 //                      height: MediaQuery.of(context).size.height * 0.35,
 //                      decoration: BoxDecoration(color: Colors.grey),
 //                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
                           children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                CircleAvatar(
-                                  radius: 14.0,
-                                  backgroundImage: AssetImage("assets/sims.png"),
-                                ),
-                                SizedBox(width: 10.0),
-                                Text("Get ready for greatness", style: GoogleFonts.montserrat(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.w300
-                                ),),
-                              ],
+                            CircleAvatar(
+                              radius: 14.0,
+                              backgroundImage: AssetImage("assets/sims.png"),
                             ),
-                            IconButton(icon: Icon(Icons.share), iconSize: 18.0, onPressed: () {})
+                            SizedBox(width: 10.0),
+                            Text("Get ready for greatness", style: GoogleFonts.montserrat(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w300
+                            ),),
                           ],
                         ),
+                        IconButton(icon: Icon(Icons.share), iconSize: 18.0, onPressed: share)
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Container(
+                    color: Colors.grey[350],
+                    height: 1.0,
+                  ),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                Expanded(
+                  child: ListView(
+                    scrollDirection: Axis.vertical,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text("Note", style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                              letterSpacing: 1.2
+                          ),),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Container(
-                        color: Colors.grey[350],
-                        height: 1.0,
+                      SizedBox(
+                        height: 2.0,
                       ),
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Container(
-                        child: Text("Note", style: GoogleFonts.montserrat(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18,
-                          letterSpacing: 1.2
-                        ),),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 2.0,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
 //                              Text(
 //                                "Title:",
 //                                style: noteTitleStyle,
 //                              ),
-                              SizedBox(
-                                height: 1.0,
-                              ),
-                              TextField(
-                  controller: _titleController,
-                                cursorColor: Colors.grey,
-                                decoration: InputDecoration.collapsed(
-                                  hintText: "Title",
+                                SizedBox(
+                                  height: 1.0,
                                 ),
-                                style: noteTextStyle,
-                              ),
-                              SizedBox(
-                                height: 5.0,
-                              ),
+                                TextField(
+                                  controller: _titleController,
+                                  cursorColor: Colors.grey,
+                                  decoration: InputDecoration.collapsed(
+                                    hintText: "Title",
+                                  ),
+                                  style: noteTextStyle,
+                                ),
+                                SizedBox(
+                                  height: 5.0,
+                                ),
 //                              Text(
 //                                "Text:",
 //                                style: noteTitleStyle,
 //                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              TextField(
-                                cursorColor: Colors.grey,
-                    controller: _textController,
-                                decoration: InputDecoration.collapsed(
-                                  hintText: "Note",
+                                SizedBox(
+                                  height: 10.0,
                                 ),
-                                style: noteTextStyle,
-                                keyboardType: TextInputType.multiline,
-                                maxLines: 18,
-                              ),
-                              SizedBox(height: 20.0),
+                                TextField(
+                                  cursorColor: Colors.grey,
+                                  controller: _textController,
+                                  decoration: InputDecoration.collapsed(
+                                    hintText: "Note",
+                                  ),
+                                  style: noteTextStyle,
+                                  keyboardType: TextInputType.multiline,
+                                  maxLines: 18,
+                                ),
+                                SizedBox(height: 20.0),
 //                            Align(
 //                              alignment: Alignment.center,
 //                                child: NoteButton("Save", appBarColor, (){
@@ -196,12 +213,13 @@ class _VideoScreenState extends State<VideoScreen> {
 //                                  NoteProvider.insertData({'title': title, 'text': text});
 //                                  print("Saved ${text.toString()}");
 //                                }))
-                            ],
-                          )),
-                    )
-                  ],
-                ),
-              ),
+                              ],
+                            )),
+                      )
+                    ],
+                  ),
+                )
+              ],
             ),
           )),
     );

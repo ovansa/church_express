@@ -11,7 +11,11 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>church_express</string>
+	<string>Church Express</string>
+    <key>CFBundleDisplayName</key>
+    <string>Church Express</string>
+    <key>CFBundleSpokenName</key>
+    <string>Church Express</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

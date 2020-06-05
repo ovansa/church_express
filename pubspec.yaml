@@ -43,6 +43,7 @@ dependencies:
   bmprogresshud: ^0.0.5
   flutter_launcher_icons: ^0.7.4
   flutter_widget_from_html_core: ^0.3.3+3
+  flutter_share: ^1.0.2+1
 
 
 dev_dependencies:

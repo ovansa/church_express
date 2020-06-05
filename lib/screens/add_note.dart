@@ -1,4 +1,5 @@
 import 'package:church_express/providers/note_provider.dart';
+import 'package:church_express/screens/notes.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/inherited_widget/inherited_widget.dart';
@@ -109,16 +110,40 @@ class _AddNoteState extends State<AddNote> {
                               'text': _textController.text
                             });
                           }
-                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                  pageBuilder: (BuildContext context, _, __) => Notes(),
+                                  transitionsBuilder:
+                                      (_, Animation<double> animation, __, Widget child) {
+                                    return new FadeTransition(
+                                        opacity: animation, child: child);
+                                  }));
                         }),
                         NoteButton("Discard", Color(0xFF545454), () {
-                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                  pageBuilder: (BuildContext context, _, __) => Notes(),
+                                  transitionsBuilder:
+                                      (_, Animation<double> animation, __, Widget child) {
+                                    return new FadeTransition(
+                                        opacity: animation, child: child);
+                                  }));
                         }),
                         widget.noteMode == NoteMode.Editing
                             ? NoteButton("Delete", Colors.red, () async {
                                 await NoteProvider.deleteNote(
                                     widget.note['id']);
-                                Navigator.pop(context);
+                                Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                        pageBuilder: (BuildContext context, _, __) => Notes(),
+                                        transitionsBuilder:
+                                            (_, Animation<double> animation, __, Widget child) {
+                                          return new FadeTransition(
+                                              opacity: animation, child: child);
+                                        }));
                               })
                             : SizedBox.shrink(),
                       ],
