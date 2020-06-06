@@ -7,8 +7,6 @@ import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_share/flutter_share.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LiveStream extends StatefulWidget {
   @override

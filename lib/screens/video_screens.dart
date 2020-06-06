@@ -1,13 +1,10 @@
 import 'package:church_express/providers/note_provider.dart';
-import 'package:church_express/screens/add_note.dart';
-import 'package:church_express/screens/live_stream.dart';
 import 'package:church_express/screens/live_stream2.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
-import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_share/flutter_share.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:share/share.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoScreen extends StatefulWidget {
@@ -49,12 +46,9 @@ class _VideoScreenState extends State<VideoScreen> {
     super.dispose();
   }
 
-  Future<void> share() async {
-    await FlutterShare.share(
-        title: 'Example share',
-        text: 'Example share text',
-        linkUrl: 'https://flutter.dev/',
-        chooserTitle: 'Example Chooser Title');
+  share(BuildContext context) {
+    final RenderBox box = context.findRenderObject();
+    Share.share("Some text", subject: "Subject text", sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
   }
 
   final TextEditingController _textController = TextEditingController();
@@ -130,7 +124,9 @@ class _VideoScreenState extends State<VideoScreen> {
                             ),),
                           ],
                         ),
-                        IconButton(icon: Icon(Icons.share), iconSize: 18.0, onPressed: share)
+                        IconButton(icon: Icon(Icons.share), iconSize: 18.0, onPressed: () {
+                          share(context);
+                        })
                       ],
                     ),
                   ),
