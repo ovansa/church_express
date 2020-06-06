@@ -1,5 +1,5 @@
-import 'package:church_express/providers/note_provider.dart';
-import 'package:church_express/screens/notes.dart';
+import 'package:church_express/screens/note/providers/note_provider.dart';
+import 'package:church_express/screens/note/notes_list_page.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/inherited_widget/inherited_widget.dart';

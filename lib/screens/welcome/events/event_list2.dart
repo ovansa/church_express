@@ -1,7 +1,7 @@
 import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:add_2_calendar/add_2_calendar.dart' as cal;
-import 'package:church_express/models/events.dart';
-import 'package:church_express/screens/authentication/event_model.dart';
+import 'package:church_express/models/welcome/events.dart';
+import 'package:church_express/models/welcome/event_model.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:date_format/date_format.dart';

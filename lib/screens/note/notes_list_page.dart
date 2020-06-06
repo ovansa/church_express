@@ -1,6 +1,6 @@
-import 'package:church_express/providers/note_provider.dart';
-import 'package:church_express/screens/add_note.dart';
-import 'package:church_express/screens/welcome.dart';
+import 'package:church_express/screens/note/providers/note_provider.dart';
+import 'package:church_express/screens/note/add_note_page.dart';
+import 'package:church_express/screens/welcome/welcome.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';

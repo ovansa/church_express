@@ -1,4 +1,4 @@
-import 'package:church_express/screens/welcome.dart';
+import 'package:church_express/screens/welcome/welcome.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

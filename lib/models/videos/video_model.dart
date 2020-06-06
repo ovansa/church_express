@@ -1,4 +1,4 @@
-class Video {
+class VideoModel {
   final String id;
   final String title;
   final String thumbnailUrl;
@@ -6,7 +6,7 @@ class Video {
   final String publishedAt;
   final String description;
 
-  Video({
+  VideoModel({
     this.id,
     this.title,
     this.thumbnailUrl,
@@ -15,8 +15,8 @@ class Video {
     this.description
   });
 
-  factory Video.fromMap(Map<String, dynamic> snippet) {
-    return Video(
+  factory VideoModel.fromMap(Map<String, dynamic> snippet) {
+    return VideoModel(
       id: snippet['resourceId']['videoId'],
       title: snippet['title'],
       thumbnailUrl: snippet['thumbnails']['high']['url'],

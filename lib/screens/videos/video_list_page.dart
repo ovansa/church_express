@@ -1,32 +1,29 @@
 import 'dart:convert';
 
-import 'package:church_express/models/LiveVideo.dart';
-import 'package:church_express/models/LiveVids.dart';
-import 'package:church_express/models/channel_model.dart';
-import 'package:church_express/models/video_model.dart';
-import 'package:church_express/screens/video_screens.dart';
-import 'package:church_express/screens/welcome.dart';
+import 'package:church_express/models/videos/LiveVideo.dart';
+import 'package:church_express/models/videos/live_video_model.dart';
+import 'package:church_express/models/videos/channel_model.dart';
+import 'package:church_express/models/videos/video_model.dart';
+import 'package:church_express/screens/videos/video_page.dart';
 import 'package:church_express/screens/welcome/welcome2.dart';
 import 'package:church_express/services/api_service.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 
-class LiveStream2 extends StatefulWidget {
+class VideoListPage extends StatefulWidget {
   @override
-  _LiveStream2State createState() => _LiveStream2State();
+  _VideoListPageState createState() => _VideoListPageState();
 }
 
-class _LiveStream2State extends State<LiveStream2> {
-  Channel _channel;
+class _VideoListPageState extends State<VideoListPage> {
+  ChannelModel _channel;
   bool _isLoading = false;
   List<LiveVideo> _liveVideos;
 
-  Future<LiveVids> theVideos;
+  Future<LiveVideoModel> theVideos;
 
   int _noOfVids;
 
@@ -46,13 +43,13 @@ class _LiveStream2State extends State<LiveStream2> {
     });
   }
 
-  Future<LiveVids> fetchTheVids() async {
+  Future<LiveVideoModel> fetchTheVids() async {
     http.Response response = await http.get(
         'https://www.googleapis.com/youtube/v3/search?key=AIzaSyCFWKRQli9kGclT16QmfdTajZnSdEgoys8&channelId=UCNye-wNBqNL5ZzHSJj3l8Bg&part=snippet,id&eventType=live&type=video');
 
     if (response.statusCode == 200) {
       print(response.toString());
-      return LiveVids.fromJson(json.decode(response.body));
+      return LiveVideoModel.fromJson(json.decode(response.body));
     } else {
       throw Exception("Error getting vids");
     }
@@ -69,7 +66,7 @@ class _LiveStream2State extends State<LiveStream2> {
   }
 
   _initChannel() async {
-    Channel channel = await APIService.instance
+    ChannelModel channel = await APIService.instance
         .fetchChannel(channelId: 'UCeY0bbntWzzVIaj2z3QigXg');
     setState(() {
       _channel = channel;
@@ -130,12 +127,12 @@ class _LiveStream2State extends State<LiveStream2> {
     );
   }
 
-  _buildVideo(Video video) {
+  _buildVideo(VideoModel video) {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => VideoScreen(id: video.id),
+          builder: (_) => VideoPage(id: video.id),
         ),
       ),
       child: Container(
@@ -203,7 +200,7 @@ class _LiveStream2State extends State<LiveStream2> {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => VideoScreen(id: items.id.videoId),
+          builder: (_) => VideoPage(id: items.id.videoId),
         ),
       ),
       child: Container(
@@ -267,9 +264,9 @@ class _LiveStream2State extends State<LiveStream2> {
 
   _loadMoreVideos() async {
     _isLoading = true;
-    List<Video> moreVideos = await APIService.instance
+    List<VideoModel> moreVideos = await APIService.instance
         .fetchVideosFromPlaylist(playlistId: _channel.uploadPlaylistId);
-    List<Video> allVideos = _channel.videos..addAll(moreVideos);
+    List<VideoModel> allVideos = _channel.videos..addAll(moreVideos);
     setState(() {
       _channel.videos = allVideos;
     });
@@ -320,7 +317,7 @@ class _LiveStream2State extends State<LiveStream2> {
             _noOfVids == 0 ? SizedBox.shrink() :
             FutureBuilder(
                 future: theVideos,
-                builder: (BuildContext context, AsyncSnapshot<LiveVids> snapshot) {
+                builder: (BuildContext context, AsyncSnapshot<LiveVideoModel> snapshot) {
                   if(snapshot.hasData) {
                     return Expanded(
                       flex: 1,
@@ -381,7 +378,7 @@ class _LiveStream2State extends State<LiveStream2> {
                     if (index == 0) {
                       return SizedBox.shrink();
                     }
-                    Video video = _channel.videos[index - 1];
+                    VideoModel video = _channel.videos[index - 1];
                     return _buildVideo(video);
                   },
                 ),

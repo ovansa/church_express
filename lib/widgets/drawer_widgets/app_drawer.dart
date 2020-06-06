@@ -1,16 +1,10 @@
-import 'package:church_express/screens/add_event.dart';
 import 'package:church_express/screens/authentication/preferences.dart';
-import 'package:church_express/screens/bible/bib/new_books_page.dart';
-import 'package:church_express/screens/bible/books_page.dart';
-import 'package:church_express/screens/give.dart';
-import 'package:church_express/screens/home.dart';
-import 'package:church_express/screens/giving.dart';
+import 'package:church_express/screens/bible/offline_bible/books_page.dart';
+import 'package:church_express/screens/give/give.dart';
 import 'package:church_express/screens/hustle/hustle_list.dart';
-import 'package:church_express/screens/live_stream.dart';
-import 'package:church_express/screens/live_stream2.dart';
-import 'package:church_express/screens/notes.dart';
+import 'package:church_express/screens/videos/video_list_page.dart';
+import 'package:church_express/screens/note/notes_list_page.dart';
 import 'package:church_express/screens/splash_screen/splash_screen.dart';
-import 'package:church_express/screens/welcome.dart';
 import 'package:church_express/screens/welcome/welcome2.dart';
 import 'package:church_express/screens/welcome/welcome3.dart';
 import 'package:church_express/utils/colors.dart';
@@ -130,7 +124,7 @@ class AppDrawer extends StatelessWidget {
                         Navigator.push(
                             context,
                             PageRouteBuilder(
-                                pageBuilder: (BuildContext context, _, __) => LiveStream2(),
+                                pageBuilder: (BuildContext context, _, __) => VideoListPage(),
                                 transitionsBuilder:
                                     (_, Animation<double> animation, __, Widget child) {
                                   return new FadeTransition(

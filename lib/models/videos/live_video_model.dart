@@ -1,13 +1,13 @@
-class LiveVids {
+class LiveVideoModel {
   String kind;
   String etag;
   String regionCode;
   PageInfo pageInfo;
   List<Items> items;
 
-  LiveVids({this.kind, this.etag, this.regionCode, this.pageInfo, this.items});
+  LiveVideoModel({this.kind, this.etag, this.regionCode, this.pageInfo, this.items});
 
-  LiveVids.fromJson(Map<String, dynamic> json) {
+  LiveVideoModel.fromJson(Map<String, dynamic> json) {
     kind = json['kind'];
     etag = json['etag'];
     regionCode = json['regionCode'];

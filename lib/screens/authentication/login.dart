@@ -1,7 +1,7 @@
 import 'package:church_express/screens/authentication/preferences.dart';
 import 'package:church_express/screens/authentication/sign_up.dart';
 import 'package:church_express/screens/authentication/user_model.dart';
-import 'package:church_express/screens/welcome.dart';
+import 'package:church_express/screens/welcome/welcome.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -307,46 +307,6 @@ class _LoginState extends State<Login> {
           );
           _scaffoldKey.currentState.showSnackBar(snackBar);
       });
-//      try {
-//        FirebaseUser user = (await firebaseAuth.signInWithEmailAndPassword(
-//                email: _email, password: _password))
-//            .user;
-//        print("Logged in");
-//        setLoggedInPreference(true).then((bool committed) {
-//          Navigator.pushReplacement(
-//              context,
-//              PageRouteBuilder(
-//                  pageBuilder: (BuildContext context, _, __) => Welcome(),
-//                  transitionsBuilder:
-//                      (_, Animation<double> animation, __, Widget child) {
-//                    return new FadeTransition(opacity: animation, child: child);
-//                  }));
-//        });
-//      } catch (error) {
-//        if (error.code == 'ERROR_USER_NOT_FOUND') {
-//          print('ERROR_USER_NOT_FOUND');
-//          final snackBar = SnackBar(
-//            content: Text('Oops! Wrong email or password'),
-//            action: SnackBarAction(
-//              label: 'Cancel',
-//              onPressed: () {},
-//            ),
-//          );
-//          _scaffoldKey.currentState.showSnackBar(snackBar);
-//        } else if (error.code == 'ERROR_WRONG_PASSWORD') {
-//          print('ERROR_WRONG_PASSWORD');
-//          final snackBar = SnackBar(
-//            content: Text('Oops! Weak Password'),
-//            action: SnackBarAction(
-//              label: 'Cancel',
-//              onPressed: () {
-//                // Some code to undo the change.
-//              },
-//            ),
-//          );
-//          _scaffoldKey.currentState.showSnackBar(snackBar);
-//        } else {}
-//      }
     }
   }
 }

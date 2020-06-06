@@ -1,5 +1,3 @@
-import 'package:church_express/practice_loading/firstscreen.dart';
-import 'package:church_express/screens/authentication/login.dart';
 import 'package:church_express/screens/splash_screen/splash_screen.dart';
 import 'package:church_express/widgets/inherited_widget/inherited_widget.dart';
 import 'package:flutter/material.dart';

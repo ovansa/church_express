@@ -1,5 +1,5 @@
-import 'package:church_express/providers/note_provider.dart';
-import 'package:church_express/screens/live_stream2.dart';
+import 'package:church_express/screens/note/providers/note_provider.dart';
+import 'package:church_express/screens/videos/video_list_page.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:flutter/material.dart';
@@ -7,16 +7,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:share/share.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class VideoScreen extends StatefulWidget {
+class VideoPage extends StatefulWidget {
   final String id;
 
-  VideoScreen({this.id});
+  VideoPage({this.id});
 
   @override
-  _VideoScreenState createState() => _VideoScreenState();
+  _VideoPageState createState() => _VideoPageState();
 }
 
-class _VideoScreenState extends State<VideoScreen> {
+class _VideoPageState extends State<VideoPage> {
   final GlobalKey<ScaffoldState> _globalKey = new GlobalKey();
 
   YoutubePlayerController _controller;
@@ -227,7 +227,7 @@ class _VideoScreenState extends State<VideoScreen> {
     return  Navigator.push(
         context,
         PageRouteBuilder(
-            pageBuilder: (BuildContext context, _, __) => LiveStream2(),
+            pageBuilder: (BuildContext context, _, __) => VideoListPage(),
             transitionsBuilder:
                 (_, Animation<double> animation, __, Widget child) {
               return new FadeTransition(

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:church_express/screens/bible/bib/bible_model.dart';
+import 'package:church_express/models/bible/offline/bible_model.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:flutter/material.dart';

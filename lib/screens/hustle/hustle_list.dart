@@ -1,5 +1,5 @@
 import 'package:church_express/screens/hustle/add_hustle.dart';
-import 'package:church_express/screens/welcome.dart';
+import 'package:church_express/screens/welcome/welcome.dart';
 import 'package:church_express/screens/welcome/welcome2.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';

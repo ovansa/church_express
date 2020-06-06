@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:church_express/models/LiveVideo.dart';
-import 'package:church_express/models/video_model.dart';
+import 'package:church_express/models/videos/LiveVideo.dart';
+import 'package:church_express/models/videos/video_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:church_express/models/channel_model.dart';
+import 'package:church_express/models/videos/channel_model.dart';
 import 'package:church_express/utils/keys.dart';
 
 class APIService {
@@ -15,7 +15,7 @@ class APIService {
   final String _baseUrl = 'www.googleapis.com';
   String _nextPageToken = '';
 
-  Future<Channel> fetchChannel({String channelId}) async {
+  Future<ChannelModel> fetchChannel({String channelId}) async {
     Map<String, String> parameters = {
       'part': 'snippet, contentDetails, statistics',
       'id': channelId,
@@ -34,7 +34,7 @@ class APIService {
     var response = await http.get(uri, headers: headers);
     if (response.statusCode == 200) {
       Map<String, dynamic> data = json.decode(response.body)['items'][0];
-      Channel channel = Channel.fromMap(data);
+      ChannelModel channel = ChannelModel.fromMap(data);
 
       // Fetch first batch of videos from uploads playlist
       channel.videos = await fetchVideosFromPlaylist(
@@ -84,7 +84,7 @@ class APIService {
     }
   }
 
-  Future<List<Video>> fetchVideosFromPlaylist({String playlistId}) async {
+  Future<List<VideoModel>> fetchVideosFromPlaylist({String playlistId}) async {
     Map<String, String> parameters = {
       'part': 'snippet',
       'playlistId': playlistId,
@@ -113,10 +113,10 @@ class APIService {
       List<dynamic> videosJson = data['items'];
 
       // Fetch first eight videos from uploads playlist
-      List<Video> videos = [];
+      List<VideoModel> videos = [];
       videosJson.forEach(
         (json) => videos.add(
-          Video.fromMap(json['snippet']),
+          VideoModel.fromMap(json['snippet']),
         ),
       );
       return videos;

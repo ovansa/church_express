@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:wasm';
-import 'package:church_express/screens/authentication/event_model.dart';
+import 'package:church_express/models/welcome/event_model.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';

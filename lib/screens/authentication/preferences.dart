@@ -26,16 +26,3 @@ Future<String> getEmailPreference () async {
   String email = prefs.getString("_email");
   return email;
 }
-
-ProgressDialog showProgress(BuildContext context, String message) {
-  ProgressDialog rp;
-  rp = new ProgressDialog(context,
-      showLogs: true, isDismissible: false);
-  rp.style(
-    message: message,
-    elevation: 10.0,
-    messageTextStyle: videoTitleStyle,
-    insetAnimCurve: Curves.easeInOut,
-  );
-  return rp;
-}

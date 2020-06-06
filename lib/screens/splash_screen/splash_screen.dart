@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:church_express/screens/authentication/preferences.dart';
 import 'package:church_express/screens/authentication/sign_up.dart';
-import 'package:church_express/screens/welcome.dart';
+import 'package:church_express/screens/welcome/welcome.dart';
 import 'package:church_express/screens/welcome/welcome2.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';

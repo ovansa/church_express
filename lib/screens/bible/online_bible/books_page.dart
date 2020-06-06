@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:church_express/screens/bible/books.dart';
-import 'package:church_express/screens/bible/chapter_list_page.dart';
-import 'package:church_express/screens/welcome.dart';
+import 'package:church_express/models/bible/online/books_model.dart';
+import 'package:church_express/screens/bible/online_bible/chapter_list_page.dart';
+import 'package:church_express/screens/welcome/welcome.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';

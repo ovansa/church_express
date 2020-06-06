@@ -1,22 +1,11 @@
-import 'package:church_express/models/events.dart';
-import 'package:church_express/screens/event_list2.dart';
-import 'package:church_express/services/firebase_auth.dart';
+import 'package:church_express/screens/welcome/events/event_list2.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
-import 'package:church_express/widgets/bottom_nav_widget/bottom_navigation_bar.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
-import 'package:church_express/widgets/event_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Welcome extends StatefulWidget {
-//  final BaseAuth auth;
-//  final VoidCallback logoutCallback;
-//  final String userId;
-
-//  Welcome({Key key, this.auth, this.logoutCallback, this.userId}) : super(key: key);
 
   @override
   _WelcomeState createState() => _WelcomeState();

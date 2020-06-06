@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:church_express/screens/bible/chapter_list.dart';
-import 'package:church_express/screens/bible/chapter_page.dart';
+import 'package:church_express/models/bible/online/chapter_list_model.dart';
+import 'package:church_express/screens/bible/online_bible/chapter_page.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:flutter/material.dart';
