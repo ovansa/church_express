@@ -6,6 +6,7 @@ import 'package:church_express/models/videos/channel_model.dart';
 import 'package:church_express/models/videos/video_model.dart';
 import 'package:church_express/screens/videos/video_page.dart';
 import 'package:church_express/screens/welcome/welcome2.dart';
+import 'package:church_express/screens/welcome/welcome3.dart';
 import 'package:church_express/services/api_service.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
@@ -404,7 +405,7 @@ class _VideoListPageState extends State<VideoListPage> {
     return  Navigator.push(
         context,
         PageRouteBuilder(
-            pageBuilder: (BuildContext context, _, __) => Welcome2(),
+            pageBuilder: (BuildContext context, _, __) => Welcome3(),
             transitionsBuilder:
                 (_, Animation<double> animation, __, Widget child) {
               return new FadeTransition(

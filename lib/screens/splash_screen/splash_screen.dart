@@ -4,6 +4,7 @@ import 'package:church_express/screens/authentication/preferences.dart';
 import 'package:church_express/screens/authentication/sign_up.dart';
 import 'package:church_express/screens/welcome/welcome.dart';
 import 'package:church_express/screens/welcome/welcome2.dart';
+import 'package:church_express/screens/welcome/welcome3.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (val == null || val == false) {
           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => SignUp()));
         } else if (val == true) {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Welcome2()));
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Welcome3()));
         }
       });
     });

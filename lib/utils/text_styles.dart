@@ -27,8 +27,8 @@ TextStyle welcomeNewTitle = GoogleFonts.montserrat(fontSize: 12.0, color: Color(
 
 TextStyle welcomeArticlesTextStyle = GoogleFonts.montserrat(fontSize: 15.0, color: Color(0xFFFFFFFF), fontWeight: FontWeight.w500, letterSpacing: 1.0);
 
-TextStyle videoTitleStyle = GoogleFonts.montserrat(fontSize: 12.0, color: Color(0xFF000000), fontWeight: FontWeight.w700, letterSpacing: 1.3);
-TextStyle videoDescriptionStyle = GoogleFonts.montserrat(fontSize: 11.0, color: Color(0xFF000000), fontWeight: FontWeight.w400);
+TextStyle videoTitleStyle = GoogleFonts.montserrat(fontSize: 11.0, color: Color(0xFF000000), fontWeight: FontWeight.w700, letterSpacing: 1.3);
+TextStyle videoDescriptionStyle = GoogleFonts.montserrat(fontSize: 10.0, color: Color(0xFF000000), fontWeight: FontWeight.w400);
 TextStyle videoDateStyle = GoogleFonts.montserrat(fontSize: 10.0, color: Color(0xFF000000).withOpacity(0.4), fontWeight: FontWeight.w400);
 
 TextStyle splashHeaderStyle = GoogleFonts.montserrat(fontSize: 18.0, color: Color(0xFF262F3A), fontWeight: FontWeight.w600);
@@ -43,3 +43,8 @@ TextStyle donateTtitleStyle = GoogleFonts.montserrat(fontSize: 14.0, color: Colo
 TextStyle hustleOwnerNameStyle = GoogleFonts.montserrat(fontSize: 12.0, color: Color(0xFF000000), fontWeight: FontWeight.w500, letterSpacing: 1.0);
 TextStyle hustleBusinessNameStyle = GoogleFonts.montserrat(fontSize: 14.0, color: Color(0xFF000000), fontWeight: FontWeight.w500, letterSpacing: 1.0);
 TextStyle hustlsDetailsStyle = GoogleFonts.montserrat(fontSize: 14.0, color: Color(0xFFFFFFFF), fontWeight: FontWeight.w500, letterSpacing: 1.0);
+
+TextStyle articleHeaderStyle = GoogleFonts.montserrat(fontSize: 30.0, color: Color(0xFF000000), fontWeight: FontWeight.w700, letterSpacing: 1.2);
+TextStyle articleSubTextStyle = GoogleFonts.montserrat(fontSize: 11.0, color: Color(0xFF000000), fontWeight: FontWeight.w500);
+TextStyle articlePhotoByStyle = GoogleFonts.montserrat(fontSize: 11.0, color: Color(0xFF000000), fontWeight: FontWeight.w500, letterSpacing: 1.2);
+TextStyle articleTextStyle = GoogleFonts.montserrat(fontSize: 14.0, color: Color(0xFF000000), fontWeight: FontWeight.w400, letterSpacing: 1.2, height: 1.5);

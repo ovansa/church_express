@@ -40,28 +40,28 @@ class AppDrawer extends StatelessWidget {
             children: <Widget>[
               Column(
                 children: <Widget>[
+//                  createDrawerItem(
+//                      icon: FontAwesomeIcons.home,
+//                      text: Text(
+//                        "Home",
+//                        style: drawerItemsStyle,
+//                      ),
+//                      onTap: () {
+//                        Navigator.of(context).pop();
+//                        Navigator.push(
+//                            context,
+//                            PageRouteBuilder(
+//                                pageBuilder: (BuildContext context, _, __) => Welcome2(),
+//                                transitionsBuilder:
+//                                    (_, Animation<double> animation, __, Widget child) {
+//                                  return new FadeTransition(
+//                                      opacity: animation, child: child);
+//                                }));
+//                      }),
                   createDrawerItem(
                       icon: FontAwesomeIcons.home,
                       text: Text(
                         "Home",
-                        style: drawerItemsStyle,
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                                pageBuilder: (BuildContext context, _, __) => Welcome2(),
-                                transitionsBuilder:
-                                    (_, Animation<double> animation, __, Widget child) {
-                                  return new FadeTransition(
-                                      opacity: animation, child: child);
-                                }));
-                      }),
-                  createDrawerItem(
-                      icon: FontAwesomeIcons.home,
-                      text: Text(
-                        "Home2",
                         style: drawerItemsStyle,
                       ),
                       onTap: () {

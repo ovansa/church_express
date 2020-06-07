@@ -1,6 +1,7 @@
 import 'package:church_express/screens/note/providers/note_provider.dart';
 import 'package:church_express/screens/note/add_note_page.dart';
 import 'package:church_express/screens/welcome/welcome.dart';
+import 'package:church_express/screens/welcome/welcome3.dart';
 import 'package:church_express/utils/colors.dart';
 import 'package:church_express/utils/text_styles.dart';
 import 'package:church_express/widgets/drawer_widgets/app_drawer.dart';
@@ -130,7 +131,7 @@ class _NotesState extends State<Notes> {
     return  Navigator.push(
         context,
         PageRouteBuilder(
-            pageBuilder: (BuildContext context, _, __) => Welcome(),
+            pageBuilder: (BuildContext context, _, __) => Welcome3(),
             transitionsBuilder:
                 (_, Animation<double> animation, __, Widget child) {
               return new FadeTransition(
